@@ -2,9 +2,6 @@ package org.example.repository;
 
 import java.io.File;
 import java.sql.*;
-import java.util.*;
-
-import static javax.management.remote.JMXConnectorFactory.connect;
 
 public class Repository {
     private static final String _DATA_BASE_ = "dados.db";
