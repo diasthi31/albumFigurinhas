@@ -15,6 +15,8 @@ public class Repository {
 
             if (!file.exists()) {
                 dbCreate();
+            } else {
+                System.out.println("Database already exists.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -22,7 +24,7 @@ public class Repository {
         }
     }
 
-    private Connection connect() throws Exception {
+    protected Connection connect() throws Exception {
         if (conn == null) {
             conn = DriverManager.getConnection(_CONNECTION_STRING_);
             System.out.println("Connected to " + _CONNECTION_STRING_);
@@ -31,7 +33,7 @@ public class Repository {
         return conn;
     }
 
-    private void disconnect() throws Exception {
+    protected void disconnect() throws Exception {
         if (conn != null) {
             conn.close();
             conn = null;
