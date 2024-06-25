@@ -7,7 +7,7 @@ public enum Perfil {
 
     private final int valor;
 
-    private Perfil(int valor) {
+    Perfil(int valor) {
         this.valor = valor;
     }
 

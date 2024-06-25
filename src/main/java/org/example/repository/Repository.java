@@ -19,7 +19,7 @@ public class Repository {
                 System.out.println("Database already exists.");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getStackTrace();
             System.exit(0);
         }
     }
@@ -52,7 +52,7 @@ public class Repository {
 
             disconnect();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getStackTrace();
             System.out.println(e.getMessage());
         }
     }
