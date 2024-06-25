@@ -3,7 +3,7 @@ package org.example.entity;
 public class Usuario {
     private String login;
     private String senha;
-    private String perfil;
+    private Perfil perfil;
 
     public Usuario() {}
 
@@ -23,11 +23,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getPerfil() {
+    public Perfil getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(String perfil) {
+    public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
 
