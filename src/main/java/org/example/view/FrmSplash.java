@@ -33,7 +33,6 @@ public class FrmSplash extends JWindow implements ActionListener {
         barraProgresso.setValue(0);
         barraProgresso.setMinimum(0);
         barraProgresso.setMaximum(100);
-        barraProgresso.setStringPainted(true);
         barraProgresso.setPreferredSize(new Dimension(100,15));
 //      getContentPane().add(barraProgresso, BorderLayout.SOUTH);
 
