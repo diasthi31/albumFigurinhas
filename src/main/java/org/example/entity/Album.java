@@ -4,7 +4,7 @@ public class Album {
     private String nome;
     private Integer pagina;
     private String capa;
-    private Integer figurinhas;
+    private String figurinhas;
     private String descricao;
 
     public Album() {}
@@ -33,11 +33,11 @@ public class Album {
         this.capa = capa;
     }
 
-    public Integer getFigurinhas() {
+    public String getFigurinhas() {
         return figurinhas;
     }
 
-    public void setFigurinhas(Integer figurinhas) {
+    public void setFigurinhas(String figurinhas) {
         this.figurinhas = figurinhas;
     }
 
