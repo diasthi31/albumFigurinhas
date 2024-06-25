@@ -47,7 +47,7 @@ public class Repository {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("CREATE TABLE usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, login STRING, senha STRING, perfil STRING)");
             stmt.executeUpdate("CREATE TABLE figurinha(id INTEGER PRIMARY KEY AUTOINCREMENT, nome STRING NOT NULL, pagina INTEGER NOT NULL, capa STRING NOT NULL, tag STRING NOT NULL, descricao STRING NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE album(id INTEGER PRIMARY KEY AUTOINCREMENT, nome STRING NOT NULL, paginas INTEGER NOT NULL, capa STRING NOT NULL, figurinhas INTEGER, FOREIGN KEY (figurinhas) REFERENCES figurinha(id) ON DELETE CASCADE ON UPDATE CASCADE)");
+            stmt.executeUpdate("CREATE TABLE album(id INTEGER PRIMARY KEY AUTOINCREMENT, nome STRING NOT NULL, paginas INTEGER NOT NULL, capa STRING NOT NULL, figurinhas String, FOREIGN KEY (figurinhas) REFERENCES figurinha(tag) ON DELETE CASCADE ON UPDATE CASCADE)");
             stmt.close();
 
             disconnect();
