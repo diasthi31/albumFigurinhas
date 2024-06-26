@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class FrmSplash extends JWindow implements ActionListener {
-    private int duracao;
+    private final int duracao;
     Timer timer;
     JProgressBar barraProgresso;
 
@@ -57,6 +57,8 @@ public class FrmSplash extends JWindow implements ActionListener {
 
         //FECHA A TELA DE SPLASH
         setVisible(false);
+
+
     }
 
     @Override
