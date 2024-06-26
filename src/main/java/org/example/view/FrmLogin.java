@@ -1,28 +1,31 @@
 package org.example.view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class FrmLogin extends JFrame {
     private JTextField txtLogin;
     private JPasswordField txtSenha;
-    private JButton btnLogin;
-    private JButton btnCancelar;
+    private JButton btnOk;
+    private JButton btnSair;
 
     public FrmLogin() {
         //CRIAÇÃO DA JANELA
         setTitle("Album de Figurinhas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 400);
+        setSize(600, 300);
         setLocationRelativeTo(null);
 
         //CRIAÇÃO DOS CAMPOS
         JLabel lblLogin = new JLabel("Login:");
         JLabel lblSenha = new JLabel("Senha:");
-        txtLogin = new JTextField(50);
-        txtSenha = new JPasswordField(20);
-        btnLogin = new JButton("Login");
-        btnCancelar = new JButton("Cancelar");
+        txtLogin = new JTextField(30);
+        txtSenha = new JPasswordField(30);
+        txtLogin.setBorder(new EmptyBorder(5, 5, 5, 5));
+        txtSenha.setBorder(new EmptyBorder(5, 5, 5, 5));
+        btnOk = new JButton("Ok");
+        btnSair = new JButton("Sair");
 
         //CRIAÇÃO DO LAYOUT
         JPanel painel = new JPanel(new GridBagLayout());
@@ -45,42 +48,43 @@ public class FrmLogin extends JFrame {
         constraints.gridx = 1;
         painel.add(txtSenha, constraints);
 
+        JPanel btnPainel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        btnPainel.add(btnOk);
+        btnPainel.add(btnSair);
+
         constraints.gridx = 0;
-        constraints.gridy = 2;
+        constraints.gridy = 4;
         constraints.gridwidth = 2;
         constraints.anchor = GridBagConstraints.CENTER;
-        painel.add(btnLogin, constraints);
+        constraints.insets = new Insets(20, 5, 5, 5);
+        painel.add(btnPainel, constraints);
 
-        constraints.gridy = 3;
-        painel.add(btnCancelar, constraints);
-
-        // Adiciona o painel à janela
+        //ADICIONA PAINEL À JANELA
         add(painel);
 
-        // Configuração dos botões
-//        btnLogin.addActionListener(e -> login());
-//        btnCancelar.addActionListener(e -> cancel());
+        //CONFIGURAR BOTÕES
+        btnOk.addActionListener(e -> recuperaLogin());
+        btnSair.addActionListener(e -> sair());
     }
 
-    // Métodos de acesso aos campos
-    public String getUsername() {
+    //RESGATAR DADOS DE ENTRADA
+    public String getLogin() {
         return txtLogin.getText();
     }
 
-//    public String getPassword() {
-//        return new String(txtLogin.getPassword());
-//    }
+    public String getSenha() {
+        return new String(txtSenha.getPassword());
+    }
 
     // Métodos para botões de ação
-//    private void login() {
-//        String username = getUsername();
-//        String password = getPassword();
-//        // Aqui você pode adicionar a lógica de autenticação
-//        JOptionPane.showMessageDialog(this, "Login: " + username + "\nPassword: " + password);
-//    }
+    private void recuperaLogin() {
+        String login = getLogin();
+        String senha = getSenha();
 
-    private void cancel() {
-        txtLogin.setText("");
-        txtSenha.setText("");
+        JOptionPane.showMessageDialog(this, "Login: " + login + "\nSenha: " + senha);
+    }
+
+    private void sair() {
+        System.exit(0);
     }
 }

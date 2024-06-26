@@ -25,6 +25,7 @@ public class FrmSplash extends JWindow implements ActionListener {
         int x = (tela.width - largura) / 2;
         int y = (tela.height - altura) / 2;
         setBounds(x, y, largura, altura);
+        setLocationRelativeTo(null);
 
         //DEFINE A TELA DE SPLASH
         JLabel rotulo = new JLabel(new ImageIcon("src/main/java/org/example/img/CR7Vasco.jpg"));
