@@ -14,7 +14,7 @@ public class FrmLogin extends JFrame {
         //CRIAÇÃO DA JANELA
         setTitle("Album de Figurinhas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 250);
+        setSize(900, 500);
         setLocationRelativeTo(null);
 
         //CRIAÇÃO DOS CAMPOS

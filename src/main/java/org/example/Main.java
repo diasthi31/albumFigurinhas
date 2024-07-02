@@ -3,6 +3,7 @@ package org.example;
 import org.example.repository.Repository;
 import org.example.view.FrmLogin;
 import org.example.view.FrmSplash;
+import org.example.view.FrmUsuarios;
 
 import javax.swing.*;
 
@@ -17,5 +18,8 @@ public class Main {
             FrmLogin loginView = new FrmLogin();
             loginView.setVisible(true);
         });
+
+        FrmUsuarios usuarios = new FrmUsuarios();
+        usuarios.setVisible(true);
     }
 }
