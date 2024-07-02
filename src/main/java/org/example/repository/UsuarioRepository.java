@@ -207,4 +207,16 @@ public class UsuarioRepository extends Repository {
 
         return false;
     }
+
+    public static void main(String[] args) {
+        UsuarioRepository repositorio = new UsuarioRepository();
+
+//        repositorio.inserirUsuario();
+//        repositorio.editarUsuario();
+//        repositorio.todosUsuarios();
+//        repositorio.excluirUsuario();
+//        repositorio.verificaUsuario();
+//        repositorio.usuarioPorNome();
+//        repositorio.usuarioPorTipo();
+    }
 }

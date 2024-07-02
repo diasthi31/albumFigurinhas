@@ -2,6 +2,7 @@ package org.example.repository;
 
 import org.example.entity.Album;
 import org.example.entity.Figurinha;
+import org.example.model.GeraMD5;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -174,7 +175,7 @@ public class AlbumRepository extends Repository{
         }
     }
 
-    public void removerFigurinhas(Figurinha figurinha) {
+    public void removerFigurinhas() {
         try {
             if (existeAlbum()) {
                 String sql = "DELETE FROM album";
@@ -190,5 +191,31 @@ public class AlbumRepository extends Repository{
         } catch (Exception e) {
             e.getStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+//        AlbumRepository repositorio = new AlbumRepository();
+//        Album album = new Album();
+//        Figurinha figurinha = new Figurinha();
+//        GeraMD5 hash = new GeraMD5();
+//
+//        figurinha.setNome("Cristiano Ronaldo");
+//        figurinha.setDescricao("Foto tirada em 2024");
+//        figurinha.setPagina(1);
+//        figurinha.setCapa("/home/thaigo/IdeaProjects/albumFigurinhas/src/main/java/org/example/img/CR7Vasco.jpg");
+//        figurinha.setTag(figurinha.getCapa());
+//
+//        album.setNome("Álbum da Copa 2024");
+//        album.setCapa("");
+//        album.setDescricao("Álbum da Copa América USA 2024");
+//        album.setPagina(12);
+//        album.setFigurinhas(figurinha.getTag());
+//
+//        repositorio.criarAlbum(album);
+//        repositorio.adicionarFigurnha(figurinha);
+//        repositorio.editarFigurnha(figurinha);
+//        repositorio.buscarFigurinhaPorNome("Ronaldo");
+//        repositorio.removerFigurinha(figurinha);
+//        repositorio.removerFigurinhas();
     }
 }

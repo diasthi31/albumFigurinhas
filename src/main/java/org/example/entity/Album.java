@@ -1,10 +1,12 @@
 package org.example.entity;
 
+import java.util.List;
+
 public class Album {
     private String nome;
     private Integer pagina;
     private String capa;
-    private String figurinhas;
+    private List<String> figurinhas;
     private String descricao;
 
     public Album() {}
@@ -33,11 +35,11 @@ public class Album {
         this.capa = capa;
     }
 
-    public String getFigurinhas() {
+    public List<String> getFigurinhas() {
         return figurinhas;
     }
 
-    public void setFigurinhas(String figurinhas) {
+    public void setFigurinhas(List<String> figurinhas) {
         this.figurinhas = figurinhas;
     }
 
