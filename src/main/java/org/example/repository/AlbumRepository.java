@@ -218,4 +218,19 @@ public class AlbumRepository extends Repository{
 //        repositorio.removerFigurinha(figurinha);
 //        repositorio.removerFigurinhas();
     }
+
+    public boolean atualizarAlbum(Album album) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'atualizarAlbum'");
+    }
+
+    public Album buscarAlbum() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscarAlbum'");
+    }
+
+    public Album obterAlbum() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'obterAlbum'");
+    }
 }

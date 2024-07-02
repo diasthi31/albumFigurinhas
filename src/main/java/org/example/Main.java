@@ -5,6 +5,7 @@ import org.example.view.FrmLogin;
 import org.example.view.FrmSplash;
 import org.example.view.FrmUsuarios;
 import org.example.view.FrmUsuario;
+import org.example.view.FrmAutoria;
 
 import javax.swing.*;
 
@@ -25,5 +26,8 @@ public class Main {
 
         FrmUsuario usuario = new FrmUsuario();
         usuario.setVisible(true);
+
+        FrmAutoria album = new FrmAutoria();
+        album.setVisible(true);
     }
 }
