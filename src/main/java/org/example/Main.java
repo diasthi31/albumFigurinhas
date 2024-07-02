@@ -4,6 +4,7 @@ import org.example.repository.Repository;
 import org.example.view.FrmLogin;
 import org.example.view.FrmSplash;
 import org.example.view.FrmUsuarios;
+import org.example.view.FrmUsuario;
 
 import javax.swing.*;
 
@@ -21,5 +22,8 @@ public class Main {
 
         FrmUsuarios usuarios = new FrmUsuarios();
         usuarios.setVisible(true);
+
+        FrmUsuario usuario = new FrmUsuario();
+        usuario.setVisible(true);
     }
 }
