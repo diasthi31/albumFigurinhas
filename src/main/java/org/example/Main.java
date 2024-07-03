@@ -6,6 +6,7 @@ import org.example.view.FrmSplash;
 import org.example.view.FrmUsuarios;
 import org.example.view.FrmUsuario;
 import org.example.view.FrmAutoria;
+import org.example.view.FrmFigurinha;
 
 import javax.swing.*;
 
@@ -29,5 +30,8 @@ public class Main {
 
         FrmAutoria album = new FrmAutoria();
         album.setVisible(true);
+
+        FrmFigurinha figurinha = new FrmFigurinha();
+        figurinha.setVisible(true);
     }
 }
