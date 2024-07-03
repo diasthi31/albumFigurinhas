@@ -2,9 +2,12 @@ package org.example;
 
 import org.example.repository.Repository;
 import org.example.view.FrmLogin;
+import org.example.view.FrmNovaFigurinha;
+import org.example.view.FrmSobre;
 import org.example.view.FrmSplash;
 import org.example.view.FrmUsuarios;
 import org.example.view.FrmUsuario;
+import org.example.view.FrmAlbum;
 import org.example.view.FrmAlbumCapa;
 import org.example.view.FrmAutoria;
 import org.example.view.FrmFigurinha;
@@ -37,5 +40,14 @@ public class Main {
 
         FrmAlbumCapa albumCapa = new FrmAlbumCapa();
         albumCapa.setVisible(true);
+
+        FrmAlbum album2 = new FrmAlbum();
+        album.setVisible(true);
+
+        FrmNovaFigurinha novaFigurinha = new FrmNovaFigurinha();
+        novaFigurinha.setVisible(true);
+
+        FrmSobre sobre = new FrmSobre();
+        sobre.setVisible(true);
     }
 }
