@@ -2,6 +2,7 @@ package org.example.repository;
 
 import org.example.entity.Album;
 import org.example.entity.Figurinha;
+import org.example.model.FigurinhaModel;
 import org.example.model.GeraMD5;
 
 import java.sql.Connection;
@@ -40,7 +41,7 @@ public class AlbumRepository extends Repository{
     public Boolean criarAlbum(Album album) {
         try {
             if (!existeAlbum()) {
-                String sql = "INSERT INTO album (nome, pagina, capa, descricao) VALUES (?, ?, ?, ?)";
+                String sql = "INSERT INTO album (nome, paginas, capa, figurinhas) VALUES (?, ?, ?, ?)";
 
                 Connection conn = connect();
                 PreparedStatement stmt = conn.prepareStatement(sql);
@@ -48,7 +49,7 @@ public class AlbumRepository extends Repository{
                 stmt.setString(1, album.getNome());
                 stmt.setInt(2, album.getPagina());
                 stmt.setString(3, album.getCapa());
-                stmt.setString(4, album.getDescricao());
+                stmt.setString(4, album.getFigurinhas());
 
                 stmt.executeUpdate();
 
@@ -62,6 +63,33 @@ public class AlbumRepository extends Repository{
         }
 
         return false;
+    }
+
+    public Album obterAlbum() {
+        Album album = new Album();
+
+        String sql = "SELECT nome, pagina, capa, figurinhas FROM album WHERE id = 1";
+
+        try {
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                album.setNome(rs.getString(1));
+                album.setPagina(rs.getInt(2));
+                album.setCapa(rs.getString(3));
+                album.setFigurinhas(rs.getString(4));
+            }
+
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        System.out.println(album);
+        return album;
     }
 
     public Boolean adicionarFigurnha(Figurinha figurinha) {
@@ -194,24 +222,24 @@ public class AlbumRepository extends Repository{
     }
 
     public static void main(String[] args) {
-//        AlbumRepository repositorio = new AlbumRepository();
-//        Album album = new Album();
-//        Figurinha figurinha = new Figurinha();
-//        GeraMD5 hash = new GeraMD5();
-//
-//        figurinha.setNome("Cristiano Ronaldo");
-//        figurinha.setDescricao("Foto tirada em 2024");
-//        figurinha.setPagina(1);
-//        figurinha.setCapa("/home/thaigo/IdeaProjects/albumFigurinhas/src/main/java/org/example/img/CR7Vasco.jpg");
-//        figurinha.setTag(figurinha.getCapa());
-//
-//        album.setNome("Álbum da Copa 2024");
-//        album.setCapa("");
-//        album.setDescricao("Álbum da Copa América USA 2024");
-//        album.setPagina(12);
-//        album.setFigurinhas(figurinha.getTag());
-//
-//        repositorio.criarAlbum(album);
+        AlbumRepository repositorio = new AlbumRepository();
+        Album album = new Album();
+        Figurinha figurinha = new Figurinha();
+
+        figurinha.setNome("Cristiano Ronaldo");
+        figurinha.setDescricao("Foto tirada em 2024");
+        figurinha.setPagina(1);
+        figurinha.setCapa("/home/thaigo/IdeaProjects/albumFigurinhas/src/main/java/org/example/img/CR7Vasco.jpg");
+        figurinha.setTag(FigurinhaModel.gerarHash(figurinha.getCapa()));
+        System.out.println(figurinha.getTag());
+
+        album.setNome("Álbum da Copa 2024");
+        album.setCapa("");
+        album.setPagina(12);
+        album.setFigurinhas(figurinha.getTag());
+
+        repositorio.criarAlbum(album);
+        repositorio.obterAlbum();
 //        repositorio.adicionarFigurnha(figurinha);
 //        repositorio.editarFigurnha(figurinha);
 //        repositorio.buscarFigurinhaPorNome("Ronaldo");
@@ -227,10 +255,5 @@ public class AlbumRepository extends Repository{
     public Album buscarAlbum() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'buscarAlbum'");
-    }
-
-    public Album obterAlbum() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'obterAlbum'");
     }
 }

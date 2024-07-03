@@ -29,7 +29,7 @@ public class FigurinhaModel {
         }
     }
 
-    private static byte[] lerArquivoImagem(String caminhoImagem) throws IOException {
+    public static byte[] lerArquivoImagem(String caminhoImagem) throws IOException {
         File arquivo = new File(caminhoImagem);
         FileInputStream fis = new FileInputStream(arquivo);
         byte[] imagemBytes = new byte[(int) arquivo.length()];
@@ -39,10 +39,7 @@ public class FigurinhaModel {
         return imagemBytes;
     }
 
-    public byte[] converterImagem(String imagem) throws IOException {
-        String caminhoImagem = imagem;
-        byte[] imagemBytes = lerArquivoImagem(caminhoImagem);
-
-        return imagemBytes;
+    public static byte[] converterImagem(String imagem) throws IOException {
+        return lerArquivoImagem(imagem);
     }
 }

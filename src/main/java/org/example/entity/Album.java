@@ -6,7 +6,7 @@ public class Album {
     private String nome;
     private Integer pagina;
     private String capa;
-    private List<String> figurinhas;
+    private String figurinhas;
     private String descricao;
 
     public Album() {}
@@ -35,11 +35,11 @@ public class Album {
         this.capa = capa;
     }
 
-    public List<String> getFigurinhas() {
+    public String getFigurinhas() {
         return figurinhas;
     }
 
-    public void setFigurinhas(List<String> figurinhas) {
+    public void setFigurinhas(String figurinhas) {
         this.figurinhas = figurinhas;
     }
 
