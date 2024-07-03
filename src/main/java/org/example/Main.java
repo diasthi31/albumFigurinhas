@@ -42,7 +42,7 @@ public class Main {
         albumCapa.setVisible(true);
 
         FrmAlbum album2 = new FrmAlbum();
-        album.setVisible(true);
+        album2.setVisible(true);
 
         FrmNovaFigurinha novaFigurinha = new FrmNovaFigurinha();
         novaFigurinha.setVisible(true);

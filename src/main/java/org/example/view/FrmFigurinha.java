@@ -27,12 +27,12 @@ public class FrmFigurinha extends JFrame {
 
         // Implemente a lógica para bloquear campos se o usuário for colecionador
 
-        btnSalvar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implemente a lógica para salvar as alterações da figurinha
-            }
-        });
+//        btnSalvar.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                // Implemente a lógica para salvar as alterações da figurinha
+//            }
+//        });
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();

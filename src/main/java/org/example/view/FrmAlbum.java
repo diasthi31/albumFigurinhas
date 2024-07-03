@@ -3,6 +3,7 @@ package org.example.view;
 import org.example.controller.AlbumController;
 import org.example.entity.Album;
 import org.example.entity.Figurinha;
+import org.example.repository.AlbumRepository;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -31,12 +32,12 @@ public class FrmAlbum extends JFrame {
 
     private void initComponents() {
         Album album = albumController.obterAlbum();
+        AlbumRepository repositorio = new AlbumRepository();
 
         JPanel panel = new JPanel(new GridLayout(0, 3, 10, 10));
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Simulação de figurinhas do álbum (substitua pela lógica real de seu sistema)
-        List<Figurinha> figurinhas = buscarFigurinhasDoAlbum(album);
+        List<Figurinha> figurinhas = repositorio.buscarTodasFigurinhas();
 
         for (Figurinha figurinha : figurinhas) {
             JLabel lblFigurinha = new JLabel(new ImageIcon(figurinha.getCapa()));
@@ -68,7 +69,7 @@ public class FrmAlbum extends JFrame {
         // Implemente a lógica para buscar as figurinhas associadas ao álbum
         // Exemplo simulado:
         // return albumController.buscarFigurinhasDoAlbum(album);
-        return null; // Simulação
+        return null;
     }
 
     private void abrirFrmFigurinha(Figurinha figurinha) {
