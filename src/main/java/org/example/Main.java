@@ -5,6 +5,7 @@ import org.example.view.FrmLogin;
 import org.example.view.FrmSplash;
 import org.example.view.FrmUsuarios;
 import org.example.view.FrmUsuario;
+import org.example.view.FrmAlbumCapa;
 import org.example.view.FrmAutoria;
 import org.example.view.FrmFigurinha;
 
@@ -33,5 +34,8 @@ public class Main {
 
         FrmFigurinha figurinha = new FrmFigurinha();
         figurinha.setVisible(true);
+
+        FrmAlbumCapa albumCapa = new FrmAlbumCapa();
+        albumCapa.setVisible(true);
     }
 }
