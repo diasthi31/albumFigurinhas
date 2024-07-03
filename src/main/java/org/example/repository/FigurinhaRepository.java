@@ -59,6 +59,36 @@ public class FigurinhaRepository extends Repository {
         return false;
     }
 
+    public Figurinha buscarFigurinhaPorTagSecundario(String tag) {
+        Figurinha figurinha = new Figurinha();
+        try {
+            String sql = "SELECT f.nome, f.pagina, f.capa, f.tag, f.descricao FROM figurinha f WHERE tag = ?";
+
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, tag);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                figurinha.setCapa(rs.getString("capa"));
+                figurinha.setNome(rs.getString("nome"));
+                figurinha.setDescricao(rs.getString("descricao"));
+                figurinha.setTag(rs.getString("tag"));
+                figurinha.setPagina(rs.getInt("pagina"));
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return figurinha;
+    }
+
     public void visualizarImagemBanco() {
         String sql = "SELECT capa FROM figurinha";
 
