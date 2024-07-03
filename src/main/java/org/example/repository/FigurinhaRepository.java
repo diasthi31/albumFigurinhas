@@ -60,10 +60,11 @@ public class FigurinhaRepository extends Repository {
     }
 
     public void visualizarImagemBanco() {
-        String sql = "SELECT capa FROM figurinha"; // Adicione uma cláusula WHERE para selecionar uma imagem específica
+        String sql = "SELECT capa FROM figurinha";
 
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
 
             ResultSet rs = stmt.executeQuery();
 
@@ -73,15 +74,14 @@ public class FigurinhaRepository extends Repository {
 
                 try (FileOutputStream fos = new FileOutputStream(outputFilePath)) {
                     fos.write(imgBytes);
-                    System.out.println("Image has been saved to " + outputFilePath);
                 } catch (IOException e) {
                     System.out.println("Error writing image to file: " + e.getMessage());
                 }
-            } else {
-                System.out.println("No image found with the given id.");
             }
 
             rs.close();
+            stmt.close();
+            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,7 +98,6 @@ public class FigurinhaRepository extends Repository {
         figurinha.setTag(figurinha.getCapa());
 
         repositorio.cadastrarFigurinha(figurinha);
-//        System.out.println(repositorio.buscarFigurinhaPorTag("3f4989655f6b31a69a376e19a7382f7b"));
 //        repositorio.visualizarImagemBanco();
     }
 }

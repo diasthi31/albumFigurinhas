@@ -38,6 +38,11 @@ public class AlbumRepository extends Repository{
         return false;
     }
 
+    public boolean atualizarAlbum(Album album) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'atualizarAlbum'");
+    }
+
     public Boolean criarAlbum(Album album) {
         try {
             if (!existeAlbum()) {
@@ -48,7 +53,7 @@ public class AlbumRepository extends Repository{
 
                 stmt.setString(1, album.getNome());
                 stmt.setInt(2, album.getPagina());
-                stmt.setString(3, album.getCapa());
+                stmt.setBytes(3, FigurinhaModel.converterImagem(album.getCapa()));
                 stmt.setString(4, album.getFigurinhas());
 
                 stmt.executeUpdate();
@@ -231,13 +236,13 @@ public class AlbumRepository extends Repository{
         figurinha.setPagina(1);
         figurinha.setCapa("/home/thaigo/IdeaProjects/albumFigurinhas/src/main/java/org/example/img/CR7Vasco.jpg");
         figurinha.setTag(FigurinhaModel.gerarHash(figurinha.getCapa()));
-        System.out.println(figurinha.getTag());
 
-        album.setNome("Álbum da Copa 2024");
-        album.setCapa("");
+        album.setNome("12");
+        album.setCapa("/home/thaigo/IdeaProjects/albumFigurinhas/src/main/java/org/example/img/CR7Vasco.jpg");
         album.setPagina(12);
         album.setFigurinhas(figurinha.getTag());
 
+        System.out.println(repositorio.existeAlbum());
         repositorio.criarAlbum(album);
         repositorio.obterAlbum();
 //        repositorio.adicionarFigurnha(figurinha);
@@ -245,15 +250,5 @@ public class AlbumRepository extends Repository{
 //        repositorio.buscarFigurinhaPorNome("Ronaldo");
 //        repositorio.removerFigurinha(figurinha);
 //        repositorio.removerFigurinhas();
-    }
-
-    public boolean atualizarAlbum(Album album) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizarAlbum'");
-    }
-
-    public Album buscarAlbum() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscarAlbum'");
     }
 }

@@ -7,7 +7,6 @@ public class Album {
     private Integer pagina;
     private String capa;
     private String figurinhas;
-    private String descricao;
 
     public Album() {}
 
@@ -43,14 +42,6 @@ public class Album {
         this.figurinhas = figurinhas;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
     @Override
     public String toString() {
         return "Album{" +
@@ -58,7 +49,6 @@ public class Album {
                 ", pagina=" + pagina +
                 ", capa='" + capa + '\'' +
                 ", figurinhas=" + figurinhas +
-                ", descricao='" + descricao + '\'' +
                 '}';
     }
 }

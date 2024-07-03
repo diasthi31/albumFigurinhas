@@ -23,6 +23,7 @@ public class FrmAutoria extends JFrame {
         setTitle("Editar Álbum");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         JPanel pnlForm = new JPanel(new GridLayout(5, 2));
@@ -63,7 +64,6 @@ public class FrmAutoria extends JFrame {
                 album.setNome(txtNomeAlbum.getText());
                 album.setPagina(Integer.parseInt(txtPagina.getText()));
                 album.setCapa(txtCapa.getText());
-                album.setDescricao(txtDescricao.getText());
                 albumController.atualizarAlbum(album);
                 JOptionPane.showMessageDialog(null, "Álbum atualizado com sucesso.");
             }
@@ -85,12 +85,11 @@ public class FrmAutoria extends JFrame {
 
     private void carregarAlbum() {
         Album album = albumController.obterAlbum();
-        if (album != null) {
-            txtNomeAlbum.setText(album.getNome());
-            txtPagina.setText(album.getPagina().toString());
-            txtCapa.setText(album.getCapa());
-            txtDescricao.setText(album.getDescricao());
-        }
+//        if (album != null) {
+//            txtNomeAlbum.setText(album.getNome());
+//            txtPagina.setText(album.getPagina().toString());
+//            txtCapa.setText(album.getCapa());
+//        }
     }
 
     public static void main(String[] args) {

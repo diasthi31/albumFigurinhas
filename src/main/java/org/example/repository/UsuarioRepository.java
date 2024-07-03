@@ -210,8 +210,13 @@ public class UsuarioRepository extends Repository {
 
     public static void main(String[] args) {
         UsuarioRepository repositorio = new UsuarioRepository();
+        Usuario usuario = new Usuario();
 
-//        repositorio.inserirUsuario();
+        usuario.setLogin("diasthi31");
+        usuario.setSenha("123");
+        usuario.setPerfil(Perfil.AUTOR);
+
+        repositorio.inserirUsuario(usuario);
 //        repositorio.editarUsuario();
 //        repositorio.todosUsuarios();
 //        repositorio.excluirUsuario();
