@@ -20,7 +20,7 @@ public class FrmLogin extends JFrame {
     private void configuraJanela() {
         setTitle("Album de Figurinhas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 500);
+        setSize(500, 250);
         setLocationRelativeTo(null);
     }
 
