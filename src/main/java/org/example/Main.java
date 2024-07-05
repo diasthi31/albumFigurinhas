@@ -21,10 +21,8 @@ public class Main {
         FrmSplash splash = new FrmSplash(5000);
         splash.mostrarSplash();
 
-        SwingUtilities.invokeLater(() -> {
-            FrmLogin loginView = new FrmLogin();
-            loginView.setVisible(true);
-        });
+        FrmLogin loginView = new FrmLogin();
+        loginView.setVisible(true);
 
         FrmUsuarios usuarios = new FrmUsuarios();
         usuarios.setVisible(true);
