@@ -11,39 +11,44 @@ public class FrmLogin extends JFrame {
     private JButton btnSair;
 
     public FrmLogin() {
-        //CRIAÇÃO DA JANELA
+        configuraJanela();
+        iniciaComponentes();
+        configuraLayout();
+        configuraBotoes();
+    }
+
+    private void configuraJanela() {
         setTitle("Album de Figurinhas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 500);
         setLocationRelativeTo(null);
+    }
 
-        //CRIAÇÃO DOS CAMPOS
-        JLabel lblLogin = new JLabel("Login:");
-        JLabel lblSenha = new JLabel("Senha:");
+    private void iniciaComponentes() {
         txtLogin = new JTextField(30);
         txtSenha = new JPasswordField(30);
         txtLogin.setBorder(new EmptyBorder(5, 5, 5, 5));
         txtSenha.setBorder(new EmptyBorder(5, 5, 5, 5));
         btnOk = new JButton("Ok");
         btnSair = new JButton("Sair");
+    }
 
-        //CRIAÇÃO DO LAYOUT
+    private void configuraLayout() {
         JPanel painel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
-
         constraints.insets = new Insets(5, 5, 5, 5);
         constraints.anchor = GridBagConstraints.WEST;
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        painel.add(lblLogin, constraints);
+        painel.add(new JLabel("Login:"), constraints);
 
         constraints.gridx = 1;
         painel.add(txtLogin, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 1;
-        painel.add(lblSenha, constraints);
+        painel.add(new JLabel("Senha:"), constraints);
 
         constraints.gridx = 1;
         painel.add(txtSenha, constraints);
@@ -59,15 +64,14 @@ public class FrmLogin extends JFrame {
         constraints.insets = new Insets(20, 5, 5, 5);
         painel.add(btnPainel, constraints);
 
-        //ADICIONA PAINEL À JANELA
         add(painel);
+    }
 
-        //CONFIGURAR BOTÕES
+    private void configuraBotoes() {
         btnOk.addActionListener(e -> recuperaLogin());
         btnSair.addActionListener(e -> sair());
     }
 
-    //RESGATAR DADOS DE ENTRADA
     public String getLogin() {
         return txtLogin.getText();
     }
@@ -76,11 +80,9 @@ public class FrmLogin extends JFrame {
         return new String(txtSenha.getPassword());
     }
 
-    // Métodos para botões de ação
     private void recuperaLogin() {
         String login = getLogin();
         String senha = getSenha();
-
         JOptionPane.showMessageDialog(this, "Login: " + login + "\nSenha: " + senha);
     }
 
