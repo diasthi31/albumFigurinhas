@@ -7,35 +7,46 @@ import java.awt.event.ActionListener;
 
 public class FrmSplash extends JWindow implements ActionListener {
     private final int duracao;
-    Timer timer;
-    JProgressBar barraProgresso;
+    private Timer timer;
+    private JProgressBar barraProgresso;
 
-    public FrmSplash(Integer duracao) throws InterruptedException {
+    public FrmSplash(Integer duracao) {
         this.duracao = duracao;
     }
 
     public void mostrarSplash() {
+        JPanel conteudo = configuraConteudoTela();
+        configuraJanela(conteudo);
+        configuraTelaSplash(conteudo);
+
+        setVisible(true);
+
+        try {
+            Thread.sleep(duracao);
+        } catch (InterruptedException e) {
+            e.getStackTrace();
+        }
+
+        setVisible(false);
+    }
+
+    private JPanel configuraConteudoTela() {
         JPanel conteudo = (JPanel) getContentPane();
         conteudo.setBackground(Color.BLACK);
 
-        //DEFINE TAMANHO DA JANELA
-        int largura = 720;
-        int altura = 720;
-        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (tela.width - largura) / 2;
-        int y = (tela.height - altura) / 2;
-        setBounds(x, y, largura, altura);
+        return conteudo;
+    }
+
+    private void configuraJanela(JPanel conteudo) {
+        setSize(720, 720);
         setLocationRelativeTo(null);
+    }
 
-        //DEFINE A TELA DE SPLASH
+    private void configuraTelaSplash(JPanel conteudo) {
         JLabel rotulo = new JLabel(new ImageIcon("src/main/java/org/example/img/CR7Vasco.jpg"));
-
-        barraProgresso = new JProgressBar();
+        barraProgresso = new JProgressBar(0, 100);
         barraProgresso.setValue(0);
-        barraProgresso.setMinimum(0);
-        barraProgresso.setMaximum(100);
-        barraProgresso.setPreferredSize(new Dimension(100,15));
-//      getContentPane().add(barraProgresso, BorderLayout.SOUTH);
+        barraProgresso.setPreferredSize(new Dimension(100, 15));
 
         timer = new Timer(50, this);
         timer.setRepeats(true);
@@ -43,32 +54,16 @@ public class FrmSplash extends JWindow implements ActionListener {
 
         conteudo.add(rotulo, BorderLayout.CENTER);
         conteudo.add(barraProgresso, BorderLayout.SOUTH);
-        Color oraRed = new Color(126, 20, 20, 255);
-        conteudo.setBorder(BorderFactory.createLineBorder(oraRed));
-
-        //DEIXA A TELA VISÍVEL
-        setVisible(true);
-
-        //AGUARDA A DURAÇÃO PASSADA NA MAIN
-        try {
-            Thread.sleep(duracao);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //FECHA A TELA DE SPLASH
-        setVisible(false);
-
-
+        conteudo.setBorder(BorderFactory.createLineBorder(new Color(126, 20, 20, 255)));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int v = barraProgresso.getValue();
+        int valor = barraProgresso.getValue();
 
-        if (v < barraProgresso.getMaximum())
-            barraProgresso.setValue(v+1);
-        else {
+        if (valor < barraProgresso.getMaximum()) {
+            barraProgresso.setValue(valor + 1);
+        } else {
             timer.stop();
             dispose();
         }
