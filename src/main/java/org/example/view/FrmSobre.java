@@ -10,15 +10,14 @@ public class FrmSobre extends JFrame {
         setTitle("Sobre");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        initComponents();
-        layoutComponents();
+        iniciarComponentes();
 
         pack();
-        setLocationRelativeTo(null); // Centraliza a janela na tela
-        setVisible(true);
+        setSize(500, 250);
+        setLocationRelativeTo(null);
     }
 
-    private void initComponents() {
+    private void iniciarComponentes() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -31,7 +30,8 @@ public class FrmSobre extends JFrame {
         txtAreaDescricao.setLineWrap(true);
         txtAreaDescricao.setWrapStyleWord(true);
         txtAreaDescricao.setFont(new Font("Arial", Font.PLAIN, 14));
-        txtAreaDescricao.setText("Este é um aplicativo de álbum de figurinhas.\n\nDesenvolvido por: [Seu Nome]\nVersão: 1.0\n\n© 2024. Todos os direitos reservados.");
+        txtAreaDescricao.setText("Aplicativo para visualizar e gerenciar um álbum de figurinhas." +
+                "\n\nDesenvolvido por: Gabriel Cantú, Luiz Felipe e Thiago Dias\nVersão: 1.0\n\n© 2024. Todos os direitos reservados.");
         panel.add(new JScrollPane(txtAreaDescricao), BorderLayout.CENTER);
 
         JButton btnFechar = new JButton("Fechar");
@@ -39,13 +39,5 @@ public class FrmSobre extends JFrame {
         panel.add(btnFechar, BorderLayout.SOUTH);
 
         getContentPane().add(panel);
-    }
-
-    private void layoutComponents() {
-        // Define o layout da interface, se necessário
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new FrmSobre());
     }
 }
