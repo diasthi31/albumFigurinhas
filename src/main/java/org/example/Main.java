@@ -1,10 +1,6 @@
 package org.example;
 
-import org.example.controller.UsuarioController;
-import org.example.repository.Repository;
 import org.example.view.*;
-
-import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {

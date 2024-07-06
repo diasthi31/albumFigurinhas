@@ -11,6 +11,7 @@ import java.awt.*;
 public class FrmUsuario extends JFrame {
     private JTextField txtLogin;
     private JTextField txtSenha;
+    private JLabel lblPerfil;
     private JComboBox<Perfil> cbPerfil;
     private Usuario usuario;
 
@@ -62,7 +63,7 @@ public class FrmUsuario extends JFrame {
         constraints.gridx = 1;
         painel.add(txtSenha, constraints);
 
-        JLabel lblPerfil = new JLabel("Perfil:");
+        lblPerfil = new JLabel("Perfil:");
         constraints.gridx = 0;
         constraints.gridy = 2;
         painel.add(lblPerfil, constraints);
@@ -119,14 +120,34 @@ public class FrmUsuario extends JFrame {
 
         dispose();
 
-        FrmUsuarios frmUsuarios = new FrmUsuarios();
-        frmUsuarios.setVisible(true);
+        if (usuario.getPerfil().getValor() != 1) {
+            FrmAlbum frmAlbum = new FrmAlbum();
+            frmAlbum.setVisible(true);
+        } else {
+            FrmUsuarios frmUsuarios = new FrmUsuarios();
+            frmUsuarios.setVisible(true);
+        }
     }
 
     public void cancela() {
         dispose();
 
-        FrmUsuarios frmUsuarios = new FrmUsuarios();
-        frmUsuarios.setVisible(true);
+        if (usuario.getPerfil().getValor() != 1) {
+            FrmAlbum frmAlbum = new FrmAlbum();
+            frmAlbum.setVisible(true);
+        } else {
+            FrmUsuarios frmUsuarios = new FrmUsuarios();
+            frmUsuarios.setVisible(true);
+        }
+    }
+
+    public static void main(String[] args) {
+        FrmUsuario frmUsuario = new FrmUsuario();
+        frmUsuario.setVisible(true);
+    }
+
+    public void bloqueiaCampo() {
+        lblPerfil.setVisible(false);
+        cbPerfil.setVisible(false);
     }
 }

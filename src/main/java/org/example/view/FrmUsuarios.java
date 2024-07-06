@@ -131,6 +131,10 @@ public class FrmUsuarios extends JFrame {
             dispose();
             FrmUsuario frmUsuario = new FrmUsuario(usuarioSelecionado);
             frmUsuario.setVisible(true);
+
+            if (usuarioSelecionado.getPerfil().getValor() != 1)
+                frmUsuario.bloqueiaCampo();
+
         } else {
             JOptionPane.showMessageDialog(FrmUsuarios.this, "Selecione um usuário para editar.");
         }
@@ -200,5 +204,10 @@ public class FrmUsuarios extends JFrame {
 
             return component;
         }
+    }
+
+    public static void main(String[] args) {
+        FrmUsuarios frmUsuarios = new FrmUsuarios();
+        frmUsuarios.setVisible(true);
     }
 }

@@ -2,9 +2,6 @@ package org.example.repository;
 
 import org.example.entity.Album;
 import org.example.entity.Figurinha;
-import org.example.entity.Usuario;
-import org.example.model.FigurinhaModel;
-import org.example.model.GeraMD5;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

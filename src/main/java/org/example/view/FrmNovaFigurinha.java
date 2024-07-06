@@ -1,6 +1,7 @@
 package org.example.view;
 
 import org.example.controller.FigurinhaController;
+import org.example.controller.Figurinha_AlbumController;
 import org.example.entity.Figurinha;
 
 import javax.imageio.ImageIO;
@@ -43,12 +44,7 @@ public class FrmNovaFigurinha extends JFrame {
         txtTag = new JTextField(30);
         JButton btnBuscar = new JButton("...");
 
-        btnBuscar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buscarFigurinha();
-            }
-        });
+        btnBuscar.addActionListener(e -> buscarFigurinha());
 
         addComponent(panel, lblTag, gbc, 0, 0);
         addComponent(panel, txtTag, gbc, 1, 0);
@@ -104,7 +100,6 @@ public class FrmNovaFigurinha extends JFrame {
                 txtPagina.setText(String.valueOf(figurinha.getPagina()));
                 txtNumero.setText(String.valueOf(figurinha.getId()));
 
-                // Exibir a imagem da capa
                 exibirImagemCapa(figurinha.getCapa());
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -149,29 +144,33 @@ public class FrmNovaFigurinha extends JFrame {
     private void inserirFigurinha() {
         try {
             Figurinha figurinha = new Figurinha();
-            figurinha.setTag(txtTag.getText().trim());
-            figurinha.setNome(txtNome.getText().trim());
-            figurinha.setPagina(Integer.parseInt(txtPagina.getText().trim()));
-            figurinha.setId(Integer.parseInt(txtNumero.getText().trim()));
+            figurinha.setId(Integer.parseInt(txtNumero.getText()));
+            System.out.println(Integer.parseInt(txtNumero.getText()));
 
-            figurinhaController.cadastrarFigurinha(figurinha);
+            Figurinha_AlbumController figurinha_albumController = new Figurinha_AlbumController();
 
-            JOptionPane.showMessageDialog(this,
+            if (figurinha_albumController.insereFigurinhaAlbum(Integer.parseInt(txtNumero.getText())))
+                JOptionPane.showMessageDialog(this,
                     "Figurinha inserida com sucesso!",
                     "Sucesso",
-                    JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.INFORMATION_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(this, "Erro ao inserir figurinha!");
 
             limparCampos();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,
-                    "Página e Número(ID) devem ser números inteiros!",
+                    "Página e ID devem ser números inteiros!",
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void voltarAoAlbum() {
-        dispose(); // Fecha a janela atual e volta ao álbum
+        dispose();
+
+        FrmAlbum frmAlbum = new FrmAlbum();
+        frmAlbum.setVisible(true);
     }
 
     private void limparCampos() {

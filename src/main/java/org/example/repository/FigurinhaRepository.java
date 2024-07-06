@@ -2,14 +2,12 @@ package org.example.repository;
 
 import org.example.entity.Figurinha;
 import org.example.model.FigurinhaModel;
-import org.example.model.GeraMD5;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.swing.*;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +90,7 @@ public class FigurinhaRepository extends Repository {
         return figurinha;
     }
 
-    public void visualizarImagemBanco(Integer id) {
+    public ImageIcon visualizarImagemBanco(Integer id) {
         String sql = "SELECT capa FROM figurinha WHERE id = ? ";
 
         try {
@@ -105,13 +103,13 @@ public class FigurinhaRepository extends Repository {
 
             if (rs.next()) {
                 byte[] imgBytes = rs.getBytes("capa");
-                String outputFilePath = "output-image.jpg";
 
-                try (FileOutputStream fos = new FileOutputStream(outputFilePath)) {
-                    fos.write(imgBytes);
-                } catch (IOException e) {
-                    System.out.println("Error writing image to file: " + e.getMessage());
-                }
+                ImageIcon imagemIcon = new ImageIcon(imgBytes);
+
+                Image imagem = imagemIcon.getImage();
+                Image novaImagem = imagem.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+
+                return new ImageIcon(novaImagem);
             }
 
             rs.close();
@@ -120,6 +118,8 @@ public class FigurinhaRepository extends Repository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public List<Figurinha> buscarTodas() {
@@ -204,6 +204,12 @@ public class FigurinhaRepository extends Repository {
 
     public static void main(String[] args) {
         FigurinhaRepository figurinhaRepository = new FigurinhaRepository();
-        figurinhaRepository.visualizarImagemBanco(1);
+
+        Figurinha figurinha = new Figurinha();
+        figurinha.setNome("Mbappé");
+        figurinha.setPagina(2);
+        figurinha.setCapa("/home/thaigo/Downloads/mbappe.jpeg");
+        figurinha.setDescricao("Copa");
+        figurinhaRepository.cadastrarFigurinha(figurinha);
     }
 }
