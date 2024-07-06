@@ -64,7 +64,7 @@ public class FigurinhaRepository extends Repository {
     public Figurinha buscarFigurinhaPorTagSecundario(String tag) {
         Figurinha figurinha = new Figurinha();
         try {
-            String sql = "SELECT f.nome, f.pagina, f.capa, f.tag, f.descricao FROM figurinha f WHERE tag = ?";
+            String sql = "SELECT f.id, f.nome, f.pagina, f.capa, f.tag, f.descricao FROM figurinha f WHERE tag = ?";
 
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -74,6 +74,7 @@ public class FigurinhaRepository extends Repository {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
+                figurinha.setId(rs.getInt("id"));
                 figurinha.setCapa(rs.getString("capa"));
                 figurinha.setNome(rs.getString("nome"));
                 figurinha.setDescricao(rs.getString("descricao"));
@@ -91,12 +92,14 @@ public class FigurinhaRepository extends Repository {
         return figurinha;
     }
 
-    public void visualizarImagemBanco() {
-        String sql = "SELECT capa FROM figurinha";
+    public void visualizarImagemBanco(Integer id) {
+        String sql = "SELECT capa FROM figurinha WHERE id = ? ";
 
         try {
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, id);
 
             ResultSet rs = stmt.executeQuery();
 
@@ -197,5 +200,10 @@ public class FigurinhaRepository extends Repository {
         }
 
         return false;
+    }
+
+    public static void main(String[] args) {
+        FigurinhaRepository figurinhaRepository = new FigurinhaRepository();
+        figurinhaRepository.visualizarImagemBanco(1);
     }
 }

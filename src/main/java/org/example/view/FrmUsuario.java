@@ -74,7 +74,7 @@ public class FrmUsuario extends JFrame {
 
     private void criaBotoes(JPanel painel, GridBagConstraints constraints) {
         JButton btnOk = new JButton("Ok");
-        JButton btncancela = new JButton("cancela");
+        JButton btncancela = new JButton("Cancelar");
 
         JPanel pnlButtons = new JPanel();
         pnlButtons.add(btnOk);

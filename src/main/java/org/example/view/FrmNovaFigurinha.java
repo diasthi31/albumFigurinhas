@@ -3,25 +3,30 @@ package org.example.view;
 import org.example.controller.FigurinhaController;
 import org.example.entity.Figurinha;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 public class FrmNovaFigurinha extends JFrame {
-    private FigurinhaController figurinhaController;
+    private final FigurinhaController figurinhaController;
 
     private JTextField txtTag;
     private JTextField txtNome;
     private JTextField txtPagina;
-    private JTextField txtCapa;
-    private JTextArea txtDescricao;
+    private JTextField txtNumero;
+    private JLabel lblVisualizacaoCapa;
 
     public FrmNovaFigurinha() {
         this.figurinhaController = new FigurinhaController();
 
         setTitle("Cadastro de Nova Figurinha");
-        setSize(400, 300);
+        setSize(900, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -29,99 +34,152 @@ public class FrmNovaFigurinha extends JFrame {
     }
 
     private void initComponents() {
-        JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel lblTag = new JLabel("Tag:");
-        txtTag = new JTextField();
-        panel.add(lblTag);
-        panel.add(txtTag);
-
-        JLabel lblNome = new JLabel("Nome:");
-        txtNome = new JTextField();
-        panel.add(lblNome);
-        panel.add(txtNome);
-
-        JLabel lblPagina = new JLabel("Página:");
-        txtPagina = new JTextField();
-        panel.add(lblPagina);
-        panel.add(txtPagina);
-
-        JLabel lblCapa = new JLabel("Capa:");
-        txtCapa = new JTextField();
-        panel.add(lblCapa);
-        panel.add(txtCapa);
-
-        JLabel lblDescricao = new JLabel("Descrição:");
-        txtDescricao = new JTextArea();
-        txtDescricao.setLineWrap(true);
-        JScrollPane scrollPane = new JScrollPane(txtDescricao);
-        panel.add(lblDescricao);
-        panel.add(scrollPane);
-
+        txtTag = new JTextField(30);
         JButton btnBuscar = new JButton("...");
+
         btnBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String tag = txtTag.getText().trim();
-                if (!tag.isEmpty()) {
-                    Figurinha figurinha = figurinhaController.buscarFigurinhaPorTag(tag);
-                    if (figurinha != null) {
-                        txtNome.setText(figurinha.getNome());
-                        txtPagina.setText(String.valueOf(figurinha.getPagina()));
-                        txtCapa.setText(figurinha.getCapa());
-                        txtDescricao.setText(figurinha.getDescricao());
-                    } else {
-                        JOptionPane.showMessageDialog(FrmNovaFigurinha.this,
-                                "Figurinha não encontrada!",
-                                "Erro",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(FrmNovaFigurinha.this,
-                            "Digite a tag da figurinha!",
-                            "Erro",
-                            JOptionPane.ERROR_MESSAGE);
-                }
+                buscarFigurinha();
             }
         });
 
-        panel.add(new JLabel());
-        panel.add(btnBuscar);
+        addComponent(panel, lblTag, gbc, 0, 0);
+        addComponent(panel, txtTag, gbc, 1, 0);
+        addComponent(panel, btnBuscar, gbc, 2, 0);
+
+        JLabel lblNome = new JLabel("Nome:");
+        txtNome = new JTextField(20);
+        addComponent(panel, lblNome, gbc, 0, 1);
+        addComponent(panel, txtNome, gbc, 1, 1);
+
+        JLabel lblPagina = new JLabel("Página:");
+        txtPagina = new JTextField(20);
+        addComponent(panel, lblPagina, gbc, 0, 2);
+        addComponent(panel, txtPagina, gbc, 1, 2);
+
+        JLabel lblNumero = new JLabel("Número:");
+        txtNumero = new JTextField(20);
+        addComponent(panel, lblNumero, gbc, 0, 3);
+        addComponent(panel, txtNumero, gbc, 1, 3);
+
+        JLabel lblCapaTitle = new JLabel("Capa:");
+        lblVisualizacaoCapa = new JLabel();
+        lblVisualizacaoCapa.setPreferredSize(new Dimension(150, 150));
+        addComponent(panel, lblCapaTitle, gbc, 0, 4);
+        addComponent(panel, lblVisualizacaoCapa, gbc, 1, 4);
 
         JButton btnInserir = new JButton("Inserir");
-        btnInserir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Figurinha figurinha = new Figurinha();
-                figurinha.setTag(txtTag.getText().trim());
-                figurinha.setNome(txtNome.getText().trim());
-                figurinha.setPagina(Integer.parseInt(txtPagina.getText().trim()));
-                figurinha.setCapa(txtCapa.getText().trim());
-                figurinha.setDescricao(txtDescricao.getText().trim());
+        btnInserir.addActionListener(e -> inserirFigurinha());
 
-                figurinhaController.cadastrarFigurinha(figurinha);
+        JButton btnVoltar = new JButton("Voltar");
+        btnVoltar.addActionListener(e -> voltarAoAlbum());
 
-                JOptionPane.showMessageDialog(FrmNovaFigurinha.this,
-                        "Figurinha inserida com sucesso!",
-                        "Sucesso",
-                        JOptionPane.INFORMATION_MESSAGE);
-
-                limparCampos();
-            }
-        });
-
-        panel.add(new JLabel());
-        panel.add(btnInserir);
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        addComponent(panel, btnInserir, gbc, 0, 5);
+        addComponent(panel, btnVoltar, gbc, 1, 5);
 
         add(panel, BorderLayout.CENTER);
+    }
+
+    private void addComponent(JPanel panel, Component component, GridBagConstraints gbc, int x, int y) {
+        gbc.gridx = x;
+        gbc.gridy = y;
+        panel.add(component, gbc);
+    }
+
+    private void buscarFigurinha() {
+        String tag = txtTag.getText().trim();
+        if (!tag.isEmpty()) {
+            Figurinha figurinha = figurinhaController.buscarFigurinhaPorTag(tag);
+            if (figurinha != null) {
+                txtNome.setText(figurinha.getNome());
+                txtPagina.setText(String.valueOf(figurinha.getPagina()));
+                txtNumero.setText(String.valueOf(figurinha.getId()));
+
+                // Exibir a imagem da capa
+                exibirImagemCapa(figurinha.getCapa());
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Figurinha não encontrada!",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Digite a tag da figurinha!",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void selecionarImagemCapa() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Imagens", "jpg", "png", "gif", "bmp"));
+
+        int option = fileChooser.showOpenDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            String filePath = file.getAbsolutePath();
+
+            exibirImagemCapa(filePath);
+        }
+    }
+
+    private void exibirImagemCapa(String filePath) {
+        try {
+            File file = new File(filePath);
+            if (file.exists()) {
+                ImageIcon imageIcon = new ImageIcon(ImageIO.read(file));
+                Image image = imageIcon.getImage().getScaledInstance(lblVisualizacaoCapa.getWidth(), lblVisualizacaoCapa.getHeight(), Image.SCALE_SMOOTH);
+                lblVisualizacaoCapa.setIcon(new ImageIcon(image));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void inserirFigurinha() {
+        try {
+            Figurinha figurinha = new Figurinha();
+            figurinha.setTag(txtTag.getText().trim());
+            figurinha.setNome(txtNome.getText().trim());
+            figurinha.setPagina(Integer.parseInt(txtPagina.getText().trim()));
+            figurinha.setId(Integer.parseInt(txtNumero.getText().trim()));
+
+            figurinhaController.cadastrarFigurinha(figurinha);
+
+            JOptionPane.showMessageDialog(this,
+                    "Figurinha inserida com sucesso!",
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            limparCampos();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Página e Número(ID) devem ser números inteiros!",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void voltarAoAlbum() {
+        dispose(); // Fecha a janela atual e volta ao álbum
     }
 
     private void limparCampos() {
         txtTag.setText("");
         txtNome.setText("");
         txtPagina.setText("");
-        txtCapa.setText("");
-        txtDescricao.setText("");
+        txtNumero.setText("");
+        lblVisualizacaoCapa.setIcon(null);
     }
 
     public static void main(String[] args) {
