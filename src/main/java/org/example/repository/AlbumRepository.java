@@ -53,7 +53,7 @@ public class AlbumRepository extends Repository{
 
                 stmt.setString(1, album.getNome());
                 stmt.setInt(2, album.getPagina());
-                stmt.setBytes(3, FigurinhaModel.converterImagem(album.getCapa()));
+                stmt.setString(3, album.getCapa());
 
                 stmt.executeUpdate();
 
@@ -72,7 +72,7 @@ public class AlbumRepository extends Repository{
     public Album obterAlbum() {
         Album album = new Album();
 
-        String sql = "SELECT nome, paginas, capa, figurinhas FROM album WHERE id = 1";
+        String sql = "SELECT nome, paginas, capa FROM album WHERE id = 1";
 
         try {
             Connection conn = connect();
@@ -157,7 +157,7 @@ public class AlbumRepository extends Repository{
         List<Figurinha> figurinhas = new ArrayList<>();
 
         try {
-            String sql = "SELECT f.nome, f.paginas, f.capa, f.tag, f.descricao FROM album a, figurinha f WHERE a.tag = f.tag";
+            String sql = "SELECT f.id, f.nome, f.pagina, f.capa, f.tag, f.descricao FROM album a, figurinha f WHERE a.id IN (SELECT fa.idAlbum FROM figurinha_album fa, album a, figurinha f WHERE fa.idFigurinha = f.id AND fa.idAlbum = a.id)";
 
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -167,6 +167,7 @@ public class AlbumRepository extends Repository{
             while (rs.next()) {
                 Figurinha figurinha = new Figurinha();
 
+                figurinha.setId(rs.getInt("id"));
                 figurinha.setNome(rs.getString("nome"));
                 figurinha.setPagina(rs.getInt("pagina"));
                 figurinha.setCapa(rs.getString("capa"));
@@ -190,7 +191,7 @@ public class AlbumRepository extends Repository{
         List<Figurinha> figurinhas = new ArrayList<>();
 
         try {
-            String sql = "SELECT f.nome, f.paginas, f.capa, f.tag, f.descricao FROM album a, figurinha f WHERE a.tag = f.tag AND nome LIKE %?%";
+            String sql = "SELECT f.nome, f.pagina, f.capa, f.tag, f.descricao FROM album a, figurinha f WHERE a.tag = f.tag AND nome LIKE %?%";
 
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -256,5 +257,9 @@ public class AlbumRepository extends Repository{
         } catch (Exception e) {
             e.getStackTrace();
         }
+    }
+
+    public List<Figurinha> buscarFigurinhaPorTag(String tag) {
+        return new ArrayList<>();
     }
 }

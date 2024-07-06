@@ -47,7 +47,7 @@ public class Repository {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("CREATE TABLE usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT, senha TEXT, perfil TEXT)");
             stmt.executeUpdate("CREATE TABLE figurinha(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, pagina INTEGER NOT NULL, capa BLOB NOT NULL, tag TEXT NOT NULL, descricao TEXT NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE album(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, paginas INTEGER NOT NULL, capa BLOB NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE album(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, paginas INTEGER NOT NULL, capa TEXT NOT NULL)");
             stmt.executeUpdate("CREATE TABLE figurinha_album(idAlbum INTEGER NOT NULL, idFigurinha INTEGER NOT NULL, FOREIGN KEY (idAlbum) REFERENCES album(id), FOREIGN KEY (idFigurinha) REFERENCES figurinha(id))");
             stmt.close();
 
