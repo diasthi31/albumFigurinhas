@@ -1,6 +1,7 @@
 package org.example.entity;
 
 public class Figurinha {
+    private Integer id;
     private String nome;
     private Integer pagina;
     private String capa;
@@ -8,6 +9,14 @@ public class Figurinha {
     private String descricao;
 
     public Figurinha() {}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -52,7 +61,8 @@ public class Figurinha {
     @Override
     public String toString() {
         return "Figurinha{" +
-                "nome='" + nome + '\'' +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
                 ", pagina=" + pagina +
                 ", capa='" + capa + '\'' +
                 ", tag='" + tag + '\'' +
