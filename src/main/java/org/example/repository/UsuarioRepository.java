@@ -53,9 +53,8 @@ public class UsuarioRepository extends Repository {
 
     public void excluirUsuario(String usuario) {
         try {
-            System.out.println("Entrou no método");
             String sql = "DELETE FROM usuario WHERE login = ?";
-            System.out.println(sql);
+
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
 

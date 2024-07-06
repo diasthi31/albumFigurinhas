@@ -3,9 +3,11 @@ package org.example.controller;
 import org.example.entity.Figurinha;
 import org.example.repository.FigurinhaRepository;
 
+import java.util.List;
+
 public class FigurinhaController {
 
-    private FigurinhaRepository figurinhaRepository;
+    private final FigurinhaRepository figurinhaRepository;
 
     public FigurinhaController() {
         this.figurinhaRepository = new FigurinhaRepository();
@@ -15,24 +17,19 @@ public class FigurinhaController {
         figurinhaRepository.cadastrarFigurinha(figurinha);
     }
 
-    public Figurinha buscarFigurinhaPorTagSecundario(String tag) {
+    public Figurinha buscarFigurinhaPorTag(String tag) {
         return figurinhaRepository.buscarFigurinhaPorTagSecundario(tag);
     }
 
-    // Método para verificar se o usuário é colecionador
-    public boolean isColecionador() {
-        // Implemente a lógica para verificar se o usuário é colecionador
-        return false; // Exemplo simples
+    public List<Figurinha> buscarTodas() {
+        return figurinhaRepository.buscarTodas();
     }
 
-    // Método para permitir ou não a edição da figurinha baseada no perfil
-    public boolean permiteEdicao(Figurinha figurinha) {
-        if (isColecionador()) {
-            // Se for colecionador, não permite edição
-            return false;
-        } else {
-            // Outros perfis podem editar
-            return true;
-        }
+    public Boolean removerFigurinha(int id) {
+        return figurinhaRepository.removerFigurinha(id);
+    }
+
+    public Boolean atualizarFigurinha(Figurinha figurinha) {
+        return figurinhaRepository.atualizarFigurinha(figurinha);
     }
 }

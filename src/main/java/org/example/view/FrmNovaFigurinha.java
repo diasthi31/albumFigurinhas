@@ -64,7 +64,7 @@ public class FrmNovaFigurinha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String tag = txtTag.getText().trim();
                 if (!tag.isEmpty()) {
-                    Figurinha figurinha = figurinhaController.buscarFigurinhaPorTagSecundario(tag);
+                    Figurinha figurinha = figurinhaController.buscarFigurinhaPorTag(tag);
                     if (figurinha != null) {
                         txtNome.setText(figurinha.getNome());
                         txtPagina.setText(String.valueOf(figurinha.getPagina()));

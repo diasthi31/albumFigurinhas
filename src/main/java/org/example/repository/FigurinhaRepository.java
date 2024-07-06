@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FigurinhaRepository extends Repository {
     public void cadastrarFigurinha(Figurinha figurinha) {
@@ -117,17 +119,83 @@ public class FigurinhaRepository extends Repository {
         }
     }
 
-    public static void main(String[] args) {
-        FigurinhaRepository repositorio = new FigurinhaRepository();
-        Figurinha figurinha = new Figurinha();
+    public List<Figurinha> buscarTodas() {
+        List<Figurinha> figurinhas = new ArrayList<>();
 
-        figurinha.setNome("Cristiano Ronaldo");
-        figurinha.setDescricao("Foto tirada em 2024");
-        figurinha.setPagina(1);
-        figurinha.setCapa("/home/thaigo/IdeaProjects/albumFigurinhas/src/main/java/org/example/img/CR7Vasco.jpg");
-        figurinha.setTag(figurinha.getCapa());
+        try {
+            String sql = "SELECT f.id, f.nome, f.pagina, f.capa, f.tag, f.descricao FROM figurinha f ";
 
-        repositorio.cadastrarFigurinha(figurinha);
-//        repositorio.visualizarImagemBanco();
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Figurinha figurinha = new Figurinha();
+
+                figurinha.setId(rs.getInt("id"));
+                figurinha.setCapa(rs.getString("capa"));
+                figurinha.setNome(rs.getString("nome"));
+                figurinha.setDescricao(rs.getString("descricao"));
+                figurinha.setTag(rs.getString("tag"));
+                figurinha.setPagina(rs.getInt("pagina"));
+
+                figurinhas.add(figurinha);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return figurinhas;
+    }
+
+    public Boolean removerFigurinha(int id) {
+        String sql = "DELETE FROM figurinha WHERE id = ? ";
+
+        try {
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            conn.close();
+
+            return true;
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return false;
+    }
+
+    public Boolean atualizarFigurinha(Figurinha figurinha) {
+        try {
+            String sql = "UPDATE figurinha SET nome = ?, pagina = ? WHERE nome = ?";
+
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, figurinha.getNome());
+            stmt.setInt(2, figurinha.getPagina());
+            stmt.setString(3, figurinha.getNome());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            disconnect();
+
+            return true;
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return false;
     }
 }

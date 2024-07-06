@@ -1,84 +1,152 @@
 package org.example.view;
 
 import org.example.controller.AlbumController;
-import org.example.entity.Album;
 import org.example.entity.Figurinha;
-import org.example.repository.AlbumRepository;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class FrmAlbum extends JFrame {
-
     private AlbumController albumController;
+    private JPanel panel;
+    private JScrollPane scrollPane;
+    private List<Figurinha> figurinhas;
 
     public FrmAlbum() {
         this.albumController = new AlbumController();
 
-        setTitle("Álbum de Figurinhas");
+        setTitle("Álbum de figurinhas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        initComponents();
-        layoutComponents();
-
+        setSize(900, 500);
+        setLocationRelativeTo(null);
+        inicializarComponentes();
         pack();
-        setLocationRelativeTo(null); // Centraliza a janela na tela
-        setVisible(true);
     }
 
-    private void initComponents() {
-        Album album = albumController.obterAlbum();
-        AlbumRepository repositorio = new AlbumRepository();
+    private void inicializarComponentes() {
+        JPanel topPanel = new JPanel(new FlowLayout());
+        JButton btn1 = new JButton("1");
+        JButton btn2 = new JButton("2");
+        JButton btn3 = new JButton("3");
 
-        JPanel panel = new JPanel(new GridLayout(0, 3, 10, 10));
+        topPanel.add(btn1);
+        topPanel.add(btn2);
+        topPanel.add(btn3);
+
+        panel = new JPanel(new GridLayout(0, 3, 10, 10));
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        List<Figurinha> figurinhas = repositorio.buscarTodasFigurinhas();
+        figurinhas = buscarFigurinhas();
+        carregarFigurinhas();
 
-        for (Figurinha figurinha : figurinhas) {
-            JLabel lblFigurinha = new JLabel(new ImageIcon(figurinha.getCapa()));
-            lblFigurinha.setToolTipText("Clique duplo para detalhes");
-
-            lblFigurinha.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        abrirFrmFigurinha(figurinha);
-                    }
-                }
-            });
-
-            panel.add(lblFigurinha);
-        }
-
-        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane = new JScrollPane(panel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+        JPanel bottomPanel = new JPanel(new FlowLayout());
+        JButton btnFirst = new JButton("|<");
+        JButton btnPrev = new JButton("<");
+        JTextField txtPage = new JTextField("002", 3);
+        JButton btnNext = new JButton(">");
+        JButton btnLast = new JButton(">|");
+        bottomPanel.add(btnFirst);
+        bottomPanel.add(btnPrev);
+        bottomPanel.add(txtPage);
+        bottomPanel.add(btnNext);
+        bottomPanel.add(btnLast);
+
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
+        getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+
+        btn1.addActionListener(e -> {
+            dispose();
+
+            FrmUsuario frmUsuario = new FrmUsuario();
+            frmUsuario.setVisible(true);
+        });
+
+        btn2.addActionListener(e -> {
+            dispose();
+
+            FrmNovaFigurinha novaFigurinha = new FrmNovaFigurinha();
+            novaFigurinha.setVisible(true);
+        });
+
+        btn3.addActionListener(e -> {
+            dispose();
+
+            FrmSobre sobre = new FrmSobre();
+            sobre.setVisible(true);
+        });
+
+        btnFirst.addActionListener(e -> {
+            // lógica para ir para a primeira página
+        });
+
+        btnPrev.addActionListener(e -> {
+            // lógica para ir para a página anterior
+        });
+
+        btnNext.addActionListener(e -> {
+            // lógica para ir para a próxima página
+        });
+
+        btnLast.addActionListener(e -> {
+            // lógica para ir para a última página
+        });
     }
 
-    private void layoutComponents() {
-        // Defina o layout da sua interface aqui, se necessário
+    private void carregarFigurinhas() {
+        panel.removeAll();
+        if (figurinhas != null && !figurinhas.isEmpty()) {
+            for (Figurinha figurinha : figurinhas) {
+                ImageIcon imagem = new ImageIcon(figurinha.getCapa());
+                if (imagem.getIconWidth() > 0 && imagem.getIconHeight() > 0) {
+                    JLabel lblFigurinha = new JLabel(imagem);
+                    lblFigurinha.setToolTipText("Clique duplo para detalhes");
+
+                    lblFigurinha.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            if (e.getClickCount() == 2) {
+                                abrirFrmFigurinha();
+                            }
+                        }
+                    });
+
+                    panel.add(lblFigurinha);
+                } else {
+                    System.out.println("Erro ao carregar a imagem da figurinha: " + figurinha.getNome());
+                }
+            }
+        } else {
+            JLabel lblMensagem = new JLabel("Nenhuma figurinha disponível");
+            lblMensagem.setHorizontalAlignment(SwingConstants.CENTER);
+            panel.add(lblMensagem);
+        }
+        panel.revalidate();
+        panel.repaint();
     }
 
-    private List<Figurinha> buscarFigurinhasDoAlbum(Album album) {
-        // Implemente a lógica para buscar as figurinhas associadas ao álbum
-        // Exemplo simulado:
-        // return albumController.buscarFigurinhasDoAlbum(album);
-        return null;
+    private List<Figurinha> buscarFigurinhas() {
+        return albumController.buscarFigurinhas();
     }
 
-    private void abrirFrmFigurinha(Figurinha figurinha) {
-        // Implemente a lógica para abrir FrmFigurinha com os detalhes da figurinha clicada
-        // Exemplo simulado:
-        // new FrmFigurinha(figurinha);
+    private void abrirFrmFigurinha() {
+        new FrmFigurinha().setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new FrmAlbum());
+        SwingUtilities.invokeLater(() -> {
+            FrmAlbum frmAlbum = new FrmAlbum();
+            frmAlbum.setVisible(true);
+        });
     }
 }

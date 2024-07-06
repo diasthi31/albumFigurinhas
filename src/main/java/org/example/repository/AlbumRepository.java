@@ -2,6 +2,7 @@ package org.example.repository;
 
 import org.example.entity.Album;
 import org.example.entity.Figurinha;
+import org.example.entity.Usuario;
 import org.example.model.FigurinhaModel;
 import org.example.model.GeraMD5;
 
@@ -38,9 +39,29 @@ public class AlbumRepository extends Repository{
         return false;
     }
 
-    public boolean atualizarAlbum(Album album) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizarAlbum'");
+    public Boolean editarAlbum(Album album) {
+        try {
+            String sql = "UPDATE album SET nome = ?, paginas = ?, capa = ? WHERE nome = ?";
+
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, album.getNome());
+            stmt.setInt(2, album.getPagina());
+            stmt.setString(3, album.getCapa());
+            stmt.setString(4, album.getNome());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            disconnect();
+
+            return true;
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return false;
     }
 
     public Boolean criarAlbum(Album album) {
@@ -92,7 +113,7 @@ public class AlbumRepository extends Repository{
         } catch (Exception e) {
             e.getStackTrace();
         }
-        System.out.println(album);
+
         return album;
     }
 

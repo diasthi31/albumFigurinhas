@@ -75,7 +75,7 @@ public class FrmFigurinha extends JFrame {
         constraints.gridy = 2;
         panel.add(txtCapa, constraints);
 
-        JButton btnSelecionarCapa = new JButton(" ");
+        JButton btnSelecionarCapa = new JButton("...");
         btnSelecionarCapa.addActionListener(e -> selecionarImagemCapa());
         constraints.gridx = 2;
         constraints.gridy = 2;
