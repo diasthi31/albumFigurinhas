@@ -14,7 +14,7 @@ public class Main {
         UsuarioController usuarioController = new UsuarioController();
 
         FrmSplash splash = new FrmSplash(5000);
-        splash.mostrarSplash();
+        splash.mostraSplash();
 
         FrmLogin loginView = new FrmLogin();
         loginView.setVisible(true);

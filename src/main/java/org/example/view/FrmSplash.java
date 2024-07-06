@@ -14,9 +14,9 @@ public class FrmSplash extends JWindow implements ActionListener {
         this.duracao = duracao;
     }
 
-    public void mostrarSplash() {
+    public void mostraSplash() {
         JPanel conteudo = configuraConteudoTela();
-        configuraJanela(conteudo);
+        configuraJanela();
         configuraTelaSplash(conteudo);
 
         setVisible(true);
@@ -37,7 +37,7 @@ public class FrmSplash extends JWindow implements ActionListener {
         return conteudo;
     }
 
-    private void configuraJanela(JPanel conteudo) {
+    private void configuraJanela() {
         setSize(720, 720);
         setLocationRelativeTo(null);
     }

@@ -9,13 +9,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class FrmUsuario extends JFrame {
-    private final JTextField txtLogin;
-    private final JTextField txtSenha;
-    private final JComboBox<Perfil> cbPerfil;
+    private JTextField txtLogin;
+    private JTextField txtSenha;
+    private JComboBox<Perfil> cbPerfil;
     private Usuario usuario;
 
     public FrmUsuario() {
-        this(null); // Chama o construtor com usuário nulo
+        this(null);
     }
 
     public FrmUsuario(Usuario usuario) {
@@ -26,75 +26,82 @@ public class FrmUsuario extends JFrame {
         setSize(900, 500);
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel();
-        getContentPane().add(panel, BorderLayout.CENTER);
-        panel.setLayout(new GridBagLayout());
+        JPanel painel = new JPanel();
+        getContentPane().add(painel, BorderLayout.CENTER);
+        painel.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
+        criaCamposFormulario(painel, constraints);
+        criaBotoes(painel, constraints);
+
+        if (usuario != null) {
+            preencheCampos(usuario);
+        }
+    }
+
+    private void criaCamposFormulario(JPanel painel, GridBagConstraints constraints) {
         JLabel lblLogin = new JLabel("Login:");
         constraints.gridx = 0;
         constraints.gridy = 0;
-        panel.add(lblLogin, constraints);
+        painel.add(lblLogin, constraints);
 
         txtLogin = new JTextField(40);
         txtLogin.setBorder(new EmptyBorder(5, 5, 5, 5));
         constraints.gridx = 1;
-        panel.add(txtLogin, constraints);
+        painel.add(txtLogin, constraints);
 
         JLabel lblSenha = new JLabel("Senha:");
         constraints.gridx = 0;
         constraints.gridy = 1;
-        panel.add(lblSenha, constraints);
+        painel.add(lblSenha, constraints);
 
         txtSenha = new JTextField(40);
         txtSenha.setBorder(new EmptyBorder(5, 5, 5, 5));
         constraints.gridx = 1;
-        panel.add(txtSenha, constraints);
+        painel.add(txtSenha, constraints);
 
         JLabel lblPerfil = new JLabel("Perfil:");
         constraints.gridx = 0;
         constraints.gridy = 2;
-        panel.add(lblPerfil, constraints);
+        painel.add(lblPerfil, constraints);
 
         cbPerfil = new JComboBox<>(Perfil.values());
         constraints.gridx = 1;
-        panel.add(cbPerfil, constraints);
+        painel.add(cbPerfil, constraints);
+    }
 
+    private void criaBotoes(JPanel painel, GridBagConstraints constraints) {
         JButton btnOk = new JButton("Ok");
-        JButton btnCancelar = new JButton("Cancelar");
+        JButton btncancela = new JButton("cancela");
 
         JPanel pnlButtons = new JPanel();
         pnlButtons.add(btnOk);
-        pnlButtons.add(btnCancelar);
+        pnlButtons.add(btncancela);
 
         JPanel btnPainel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         btnPainel.add(btnOk);
-        btnPainel.add(btnCancelar);
+        btnPainel.add(btncancela);
 
         constraints.gridx = 0;
         constraints.gridy = 4;
         constraints.gridwidth = 2;
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.insets = new Insets(20, 5, 5, 5);
-        panel.add(btnPainel, constraints);
+        painel.add(btnPainel, constraints);
 
-        if (usuario != null) {
-            preencherCampos(usuario);
-        }
-
-        btnOk.addActionListener(e -> salvarUsuario());
-        btnCancelar.addActionListener(e -> cancelar());
+        btnOk.addActionListener(e -> salvaUsuario());
+        btncancela.addActionListener(e -> cancela());
     }
 
-    private void preencherCampos(Usuario usuario) {
+    private void preencheCampos(Usuario usuario) {
         txtLogin.setText(usuario.getLogin());
         txtSenha.setText(usuario.getSenha());
         cbPerfil.setSelectedItem(usuario.getPerfil());
     }
 
-    private void salvarUsuario() {
+    private void salvaUsuario() {
         if (usuario == null) {
             usuario = new Usuario();
         }
@@ -103,7 +110,6 @@ public class FrmUsuario extends JFrame {
         usuario.setSenha(txtSenha.getText());
         usuario.setPerfil((Perfil) cbPerfil.getSelectedItem());
 
-        // Salvar no repositório
         UsuarioRepository usuarioRepository = new UsuarioRepository();
         if (usuario.getLogin() == null) {
             usuarioRepository.inserirUsuario(usuario);
@@ -117,7 +123,7 @@ public class FrmUsuario extends JFrame {
         frmUsuarios.setVisible(true);
     }
 
-    public void cancelar() {
+    public void cancela() {
         dispose();
 
         FrmUsuarios frmUsuarios = new FrmUsuarios();

@@ -13,31 +13,58 @@ public class FrmSobre extends JFrame {
         iniciarComponentes();
 
         pack();
-        setSize(500, 250);
+        setSize(500, 260);
         setLocationRelativeTo(null);
     }
 
     private void iniciarComponentes() {
+        JPanel panel = criaPainel();
+        JLabel lblTitulo = criaTitulo();
+        JTextArea txtAreaDescricao = criaDescricao();
+        JButton btnFechar = criaBotaoFechar();
+
+        panel.add(lblTitulo, BorderLayout.NORTH);
+        panel.add(new JScrollPane(txtAreaDescricao), BorderLayout.CENTER);
+        panel.add(btnFechar, BorderLayout.SOUTH);
+
+        getContentPane().add(panel);
+    }
+
+    private JPanel criaPainel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        return panel;
+    }
 
+    private JLabel criaTitulo() {
         JLabel lblTitulo = new JLabel("Sobre o Aplicativo", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        panel.add(lblTitulo, BorderLayout.NORTH);
 
+        return lblTitulo;
+    }
+
+    private JTextArea criaDescricao() {
         JTextArea txtAreaDescricao = new JTextArea();
         txtAreaDescricao.setEditable(false);
         txtAreaDescricao.setLineWrap(true);
         txtAreaDescricao.setWrapStyleWord(true);
         txtAreaDescricao.setFont(new Font("Arial", Font.PLAIN, 14));
-        txtAreaDescricao.setText("Aplicativo para visualizar e gerenciar um álbum de figurinhas." +
-                "\n\nDesenvolvido por: Gabriel Cantú, Luiz Felipe e Thiago Dias\nVersão: 1.0\n\n© 2024. Todos os direitos reservados.");
-        panel.add(new JScrollPane(txtAreaDescricao), BorderLayout.CENTER);
+        txtAreaDescricao.setBorder(new EmptyBorder(10, 10, 10, 10));
+        txtAreaDescricao.setText("""
+                Aplicativo para visualizar e gerenciar um álbum de figurinhas.\
 
+
+                Desenvolvido por: Gabriel Cantú, Luiz Felipe e Thiago Dias
+                Versão: 1.0
+
+                © 2024. Todos os direitos reservados.""");
+
+        return txtAreaDescricao;
+    }
+
+    private JButton criaBotaoFechar() {
         JButton btnFechar = new JButton("Fechar");
         btnFechar.addActionListener(e -> dispose());
-        panel.add(btnFechar, BorderLayout.SOUTH);
-
-        getContentPane().add(panel);
+        return btnFechar;
     }
 }

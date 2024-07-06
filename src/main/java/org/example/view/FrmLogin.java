@@ -78,25 +78,15 @@ public class FrmLogin extends JFrame {
         btnSair.addActionListener(e -> sair());
     }
 
-    public String getLogin() {
-        return txtLogin.getText();
-    }
-
-    public String getSenha() {
-        return new String(txtSenha.getPassword());
-    }
-
-    public Boolean login() {
+    public void login() {
         String login = txtLogin.getText();
         String senha = new String(txtSenha.getPassword());
 
         boolean existe = usuarioController.verificaUsuario(login, senha);
         if (existe) {
             autenticado = true;
-            return true;
         } else {
             JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos!");
-            return false;
         }
     }
 
