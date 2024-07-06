@@ -45,10 +45,10 @@ public class Repository {
             connect();
 
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("CREATE TABLE usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, login STRING, senha STRING, perfil STRING)");
-            stmt.executeUpdate("CREATE TABLE figurinha(id INTEGER PRIMARY KEY AUTOINCREMENT, nome STRING NOT NULL, pagina INTEGER NOT NULL, capa BLOB NOT NULL, tag STRING NOT NULL, descricao STRING NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE album(id INTEGER PRIMARY KEY AUTOINCREMENT, nome STRING NOT NULL, paginas INTEGER NOT NULL, capa BLOB NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE figurinha_album(idAlbum INTEGER NOT NULL, idFigurinha INTEGER NOT NULL, FOREIGN KEY (idAlbum) REFERENCES album(id), FOREIGN KEY (idFigurinha) REFERENCES figurinha(id)");
+            stmt.executeUpdate("CREATE TABLE usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT, senha TEXT, perfil TEXT)");
+            stmt.executeUpdate("CREATE TABLE figurinha(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, pagina INTEGER NOT NULL, capa BLOB NOT NULL, tag TEXT NOT NULL, descricao TEXT NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE album(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, paginas INTEGER NOT NULL, capa BLOB NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE figurinha_album(idAlbum INTEGER NOT NULL, idFigurinha INTEGER NOT NULL, FOREIGN KEY (idAlbum) REFERENCES album(id), FOREIGN KEY (idFigurinha) REFERENCES figurinha(id))");
             stmt.close();
 
             disconnect();

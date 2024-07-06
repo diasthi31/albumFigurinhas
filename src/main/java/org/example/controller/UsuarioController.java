@@ -29,7 +29,7 @@ public class UsuarioController {
     }
 
     public void excluirUsuario(Usuario usuario) {
-        usuarioRepository.excluirUsuario(usuario);
+        usuarioRepository.excluirUsuario(usuario.getLogin());
     }
 
     public List<Usuario> todosUsuarios() {
@@ -38,6 +38,10 @@ public class UsuarioController {
 
     public Boolean verificaUsuario(String login, String senha) {
         return usuarioRepository.verificaUsuario(login, senha);
+    }
+
+    public Integer verificaTipo(String login) {
+        return usuarioRepository.verificaTipoUsuario(login);
     }
 }
 

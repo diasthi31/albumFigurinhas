@@ -15,6 +15,7 @@ public class FrmLogin extends JFrame {
     private JButton btnSair;
 
     private Boolean autenticado = false;
+    private Integer tipo;
 
     public FrmLogin() {
         configuraJanela();
@@ -85,6 +86,7 @@ public class FrmLogin extends JFrame {
         boolean existe = usuarioController.verificaUsuario(login, senha);
         if (existe) {
             autenticado = true;
+            tipo = usuarioController.verificaTipo(login);
         } else {
             JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos!");
         }
@@ -96,5 +98,9 @@ public class FrmLogin extends JFrame {
 
     public Boolean autenticado() {
         return autenticado;
+    }
+
+    public Integer tipo() {
+        return tipo;
     }
 }

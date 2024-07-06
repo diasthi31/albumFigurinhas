@@ -1,5 +1,6 @@
 package org.example.view;
 
+import org.example.controller.UsuarioController;
 import org.example.repository.UsuarioRepository;
 import org.example.entity.Usuario;
 
@@ -12,10 +13,12 @@ import java.util.List;
 
 public class FrmUsuarios extends JFrame {
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioController usuarioController;
     private JTable tblUsuarios;
     private UsuarioTableModel tableModel;
 
     public FrmUsuarios() {
+        usuarioController = new UsuarioController();
         usuarioRepository = new UsuarioRepository();
 
         setTitle("Gerenciamento de Usuários");
@@ -101,14 +104,20 @@ public class FrmUsuarios extends JFrame {
 
         btnEditar.addActionListener(e -> editarUsuario());
 
-        btnFiltrar.addActionListener(e -> filtrarUsuarios(txtFiltro.getText()));
+        btnFiltrar.addActionListener(e -> {
+            if (txtFiltro.getText().isEmpty()) {
+                carregarUsuarios();
+            } else {
+                filtrarUsuarios(txtFiltro.getText());
+            }
+        });
     }
 
     private void excluirUsuario() {
         int selectedRow = tblUsuarios.getSelectedRow();
         if (selectedRow >= 0) {
             Usuario usuarioSelecionado = tableModel.getUsuarioAt(selectedRow);
-            usuarioRepository.excluirUsuario(usuarioSelecionado);
+            usuarioController.excluirUsuario(usuarioSelecionado);
             carregarUsuarios();
         } else {
             JOptionPane.showMessageDialog(FrmUsuarios.this, "Selecione um usuário para excluir.");

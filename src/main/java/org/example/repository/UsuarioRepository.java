@@ -51,14 +51,15 @@ public class UsuarioRepository extends Repository {
         }
     }
 
-    public void excluirUsuario(Usuario usuario) {
+    public void excluirUsuario(String usuario) {
         try {
+            System.out.println("Entrou no método");
             String sql = "DELETE FROM usuario WHERE login = ?";
-
+            System.out.println(sql);
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, usuario.getLogin());
+            stmt.setString(1, usuario);
 
             stmt.executeUpdate();
 
@@ -106,55 +107,14 @@ public class UsuarioRepository extends Repository {
         return usuarios;
     }
 
-    public List<Usuario> usuarioPorTipo(Integer perfil) {
-        List<Usuario> usuarios = new ArrayList<>();
-
-        try {
-            String sql = "SELECT u.login, u.perfil FROM usuario u WHERE u.perfil = ? ORDER BY u.perfil, u.login";
-
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
-
-            stmt.setInt(1, perfil);
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Usuario u = new Usuario();
-
-                u.setLogin(rs.getString("login"));
-
-                if (rs.getInt("perfil") == 1) {
-                    u.setPerfil(Perfil.ADMINISTRADOR);
-                } else if (rs.getInt("perfil") == 2) {
-                    u.setPerfil(Perfil.AUTOR);
-                } else if (rs.getInt("perfil") == 3) {
-                    u.setPerfil(Perfil.COLECIONADOR);
-                }
-
-                usuarios.add(u);
-            }
-
-            rs.close();
-            stmt.close();
-            disconnect();
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-
-        return usuarios;
-    }
-
     public List<Usuario> usuarioPorNome(String nome) {
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
-            String sql = "SELECT u.login, u.perfil FROM usuario u WHERE u.login LIKE ? ORDER BY u.perfil, u.login";
+            String sql = "SELECT u.login, u.perfil FROM usuario u WHERE u.login LIKE '%" + nome + "%' ORDER BY u.perfil, u.login";
 
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
-
-            stmt.setString(1, nome);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -206,5 +166,29 @@ public class UsuarioRepository extends Repository {
         }
 
         return false;
+    }
+
+    public Integer verificaTipoUsuario(String login) {
+        try {
+            String sql = "SELECT u.perfil FROM usuario u WHERE u.login = ? ";
+
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, login);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("perfil");
+            }
+
+            stmt.close();
+            disconnect();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return 0;
     }
 }
