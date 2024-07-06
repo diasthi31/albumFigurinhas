@@ -47,7 +47,7 @@ public class FrmFigurinha extends JFrame {
         constraints.gridy = 0;
         panel.add(lblNome, constraints);
 
-        txtNome = new JTextField(30);
+        txtNome = new JTextField(40);
         txtNome.setBorder(new EmptyBorder(5, 5, 5, 5));
         constraints.gridx = 1;
         constraints.gridy = 0;
@@ -69,7 +69,7 @@ public class FrmFigurinha extends JFrame {
         constraints.gridy = 2;
         panel.add(lblCapa, constraints);
 
-        txtCapa = new JTextField(30);
+        txtCapa = new JTextField(40);
         txtCapa.setBorder(new EmptyBorder(5, 5, 5, 5));
         constraints.gridx = 1;
         constraints.gridy = 2;
@@ -92,7 +92,7 @@ public class FrmFigurinha extends JFrame {
         constraints.gridy = 4;
         panel.add(lblTag, constraints);
 
-        txtTag = new JTextField(30);
+        txtTag = new JTextField(40);
         txtTag.setBorder(new EmptyBorder(5, 5, 5, 5));
         constraints.gridx = 1;
         constraints.gridy = 4;
@@ -103,7 +103,7 @@ public class FrmFigurinha extends JFrame {
         constraints.gridy = 5;
         panel.add(lblDescricao, constraints);
 
-        txtDescricao = new JTextField(50);
+        txtDescricao = new JTextField(40);
         txtDescricao.setBorder(new EmptyBorder(5, 5, 5, 5));
         constraints.gridx = 1;
         constraints.gridy = 5;
