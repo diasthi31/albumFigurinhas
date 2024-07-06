@@ -1,109 +1,126 @@
 package org.example.view;
 
-import org.example.controller.UsuarioController;
 import org.example.entity.Perfil;
 import org.example.entity.Usuario;
+import org.example.repository.UsuarioRepository;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 public class FrmUsuario extends JFrame {
-    private UsuarioController usuarioController;
-
-    private JTextField txtLogin;
-    private JPasswordField txtSenha;
-    private JComboBox<Perfil> cmbPerfil;
-    private JButton btnSalvar;
-    private JButton btnExcluir;
-    private JList<Usuario> lstUsuarios;
+    private final JTextField txtLogin;
+    private final JTextField txtSenha;
+    private final JComboBox<Perfil> cbPerfil;
+    private Usuario usuario;
 
     public FrmUsuario() {
-        usuarioController = new UsuarioController();
+        this(null); // Chama o construtor com usuário nulo
+    }
 
-        setTitle("Gerenciamento de Usuários");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+    public FrmUsuario(Usuario usuario) {
+        this.usuario = usuario;
 
-        JPanel pnlForm = new JPanel(new GridLayout(4, 2));
+        setTitle("Cadastro/Edição de Usuários");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(900, 500);
+        setLocationRelativeTo(null);
 
-        pnlForm.add(new JLabel("Login:"));
-        txtLogin = new JTextField();
-        pnlForm.add(txtLogin);
+        JPanel panel = new JPanel();
+        getContentPane().add(panel, BorderLayout.CENTER);
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
 
-        pnlForm.add(new JLabel("Senha:"));
-        txtSenha = new JPasswordField();
-        pnlForm.add(txtSenha);
+        JLabel lblLogin = new JLabel("Login:");
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(lblLogin, constraints);
 
-        pnlForm.add(new JLabel("Perfil:"));
-        cmbPerfil = new JComboBox<>(Perfil.values());
-        pnlForm.add(cmbPerfil);
+        txtLogin = new JTextField(40);
+        txtLogin.setBorder(new EmptyBorder(5, 5, 5, 5));
+        constraints.gridx = 1;
+        panel.add(txtLogin, constraints);
 
-        btnSalvar = new JButton("Salvar");
-        btnExcluir = new JButton("Excluir");
+        JLabel lblSenha = new JLabel("Senha:");
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        panel.add(lblSenha, constraints);
+
+        txtSenha = new JTextField(40);
+        txtSenha.setBorder(new EmptyBorder(5, 5, 5, 5));
+        constraints.gridx = 1;
+        panel.add(txtSenha, constraints);
+
+        JLabel lblPerfil = new JLabel("Perfil:");
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        panel.add(lblPerfil, constraints);
+
+        cbPerfil = new JComboBox<>(Perfil.values());
+        constraints.gridx = 1;
+        panel.add(cbPerfil, constraints);
+
+        JButton btnOk = new JButton("Ok");
+        JButton btnCancelar = new JButton("Cancelar");
 
         JPanel pnlButtons = new JPanel();
-        pnlButtons.add(btnSalvar);
-        pnlButtons.add(btnExcluir);
+        pnlButtons.add(btnOk);
+        pnlButtons.add(btnCancelar);
 
-        lstUsuarios = new JList<>();
-        atualizarListaUsuarios();
+        JPanel btnPainel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        btnPainel.add(btnOk);
+        btnPainel.add(btnCancelar);
 
-        add(pnlForm, BorderLayout.NORTH);
-        add(new JScrollPane(lstUsuarios), BorderLayout.CENTER);
-        add(pnlButtons, BorderLayout.SOUTH);
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 2;
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.insets = new Insets(20, 5, 5, 5);
+        panel.add(btnPainel, constraints);
 
-        btnSalvar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Usuario usuario = new Usuario();
-                usuario.setLogin(txtLogin.getText());
-                usuario.setSenha(new String(txtSenha.getPassword()));
-                usuario.setPerfil((Perfil) cmbPerfil.getSelectedItem());
+        if (usuario != null) {
+            preencherCampos(usuario);
+        }
 
-                if (!txtLogin.getText().isEmpty() && !txtSenha.getText().isEmpty()) {
-                    usuarioController.inserirUsuario(usuario);
-                    atualizarListaUsuarios();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Preencha todos os campos.");
-                }
-            }
-        });
-
-        btnExcluir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Usuario usuario = lstUsuarios.getSelectedValue();
-                if (usuario != null) {
-                    usuarioController.excluirUsuario(usuario);
-                    atualizarListaUsuarios();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Selecione um usuário para excluir.");
-                }
-            }
-        });
-
-        lstUsuarios.addListSelectionListener(e -> {
-            Usuario usuario = lstUsuarios.getSelectedValue();
-            if (usuario != null) {
-                txtLogin.setText(usuario.getLogin());
-                txtSenha.setText(usuario.getSenha());
-                cmbPerfil.setSelectedItem(usuario.getPerfil());
-            }
-        });
-
-        setVisible(true);
+        btnOk.addActionListener(e -> salvarUsuario());
+        btnCancelar.addActionListener(e -> cancelar());
     }
 
-    private void atualizarListaUsuarios() {
-        List<Usuario> usuarios = usuarioController.todosUsuarios();
-        lstUsuarios.setListData(usuarios.toArray(new Usuario[0]));
+    private void preencherCampos(Usuario usuario) {
+        txtLogin.setText(usuario.getLogin());
+        txtSenha.setText(usuario.getSenha());
+        cbPerfil.setSelectedItem(usuario.getPerfil());
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new FrmUsuario());
+    private void salvarUsuario() {
+        if (usuario == null) {
+            usuario = new Usuario();
+        }
+
+        usuario.setLogin(txtLogin.getText());
+        usuario.setSenha(txtSenha.getText());
+        usuario.setPerfil((Perfil) cbPerfil.getSelectedItem());
+
+        // Salvar no repositório
+        UsuarioRepository usuarioRepository = new UsuarioRepository();
+        if (usuario.getLogin() == null) {
+            usuarioRepository.inserirUsuario(usuario);
+        } else {
+            usuarioRepository.editarUsuario(usuario);
+        }
+
+        dispose();
+
+        FrmUsuarios frmUsuarios = new FrmUsuarios();
+        frmUsuarios.setVisible(true);
+    }
+
+    public void cancelar() {
+        dispose();
+
+        FrmUsuarios frmUsuarios = new FrmUsuarios();
+        frmUsuarios.setVisible(true);
     }
 }

@@ -3,15 +3,8 @@ package org.example;
 import org.example.controller.UsuarioController;
 import org.example.repository.Repository;
 import org.example.view.FrmLogin;
-import org.example.view.FrmNovaFigurinha;
-import org.example.view.FrmSobre;
 import org.example.view.FrmSplash;
 import org.example.view.FrmUsuarios;
-import org.example.view.FrmUsuario;
-import org.example.view.FrmAlbum;
-import org.example.view.FrmAlbumCapa;
-import org.example.view.FrmAutoria;
-import org.example.view.FrmFigurinha;
 
 import javax.swing.*;
 
@@ -36,8 +29,10 @@ public class Main {
 
         loginView.dispose();
 
-        FrmUsuarios usuarios = new FrmUsuarios();
-        usuarios.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            FrmUsuarios frmUsuarios = new FrmUsuarios();
+            frmUsuarios.setVisible(true);
+        });
 
 //        do {
 //

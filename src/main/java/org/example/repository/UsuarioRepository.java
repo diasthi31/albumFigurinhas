@@ -73,7 +73,7 @@ public class UsuarioRepository extends Repository {
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
-            String sql = "SELECT u.login, u.perfil FROM usuario u ORDER BY u.perfil, u.login";
+            String sql = "SELECT u.login, u.senha, u.perfil FROM usuario u ORDER BY u.perfil, u.login";
 
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -83,6 +83,7 @@ public class UsuarioRepository extends Repository {
                 Usuario u = new Usuario();
 
                 u.setLogin(rs.getString("login"));
+                u.setSenha(rs.getString("senha"));
 
                 if (rs.getInt("perfil") == 1) {
                     u.setPerfil(Perfil.ADMINISTRADOR);
@@ -148,13 +149,12 @@ public class UsuarioRepository extends Repository {
         List<Usuario> usuarios = new ArrayList<>();
 
         try {
-            String sql = "SELECT u.login, u.perfil FROM usuario u WHERE u.nome LIKE %?% ORDER BY u.perfil, u.login";
+            String sql = "SELECT u.login, u.perfil FROM usuario u WHERE u.login LIKE ? ORDER BY u.perfil, u.login";
 
             Connection conn = connect();
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setString(1, nome);
-
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
