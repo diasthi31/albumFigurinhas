@@ -86,15 +86,6 @@ public class FrmLogin extends JFrame {
         return new String(txtSenha.getPassword());
     }
 
-    public void msgErro() {
-        JOptionPane.showMessageDialog(this, "Usuário não encontrado!");
-    }
-
-    private void recuperaLogin() {
-        String login = getLogin();
-        String senha = getSenha();
-    }
-
     public Boolean login() {
         String login = txtLogin.getText();
         String senha = new String(txtSenha.getPassword());
