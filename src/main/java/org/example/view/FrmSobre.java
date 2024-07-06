@@ -64,7 +64,12 @@ public class FrmSobre extends JFrame {
 
     private JButton criaBotaoFechar() {
         JButton btnFechar = new JButton("Fechar");
-        btnFechar.addActionListener(e -> dispose());
+        btnFechar.addActionListener(e -> {
+            dispose();
+
+            FrmAlbum frmAlbum = new FrmAlbum();
+            frmAlbum.setVisible(true);
+        });
         return btnFechar;
     }
 }
