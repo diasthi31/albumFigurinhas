@@ -6,14 +6,22 @@ import org.example.repository.UsuarioRepository;
 import java.util.List;
 
 public class UsuarioController {
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public UsuarioController() {
         this.usuarioRepository = new UsuarioRepository();
     }
 
-    public void inserirUsuario(Usuario usuario) {
-        usuarioRepository.inserirUsuario(usuario);
+    public Boolean inserirUsuario(Usuario usuario) {
+        Boolean existe = usuarioRepository.verificaUsuario(usuario.getLogin(), usuario.getSenha());
+
+        if (!existe) {
+            usuarioRepository.inserirUsuario(usuario);
+
+            return true;
+        }
+
+        return false;
     }
 
     public void editarUsuario(Usuario usuario) {

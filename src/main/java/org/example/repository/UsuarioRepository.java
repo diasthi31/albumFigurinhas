@@ -207,21 +207,4 @@ public class UsuarioRepository extends Repository {
 
         return false;
     }
-
-    public static void main(String[] args) {
-        UsuarioRepository repositorio = new UsuarioRepository();
-        Usuario usuario = new Usuario();
-
-        usuario.setLogin("diasthi31");
-        usuario.setSenha("123");
-        usuario.setPerfil(Perfil.AUTOR);
-
-        repositorio.inserirUsuario(usuario);
-//        repositorio.editarUsuario();
-//        repositorio.todosUsuarios();
-//        repositorio.excluirUsuario();
-//        repositorio.verificaUsuario();
-//        repositorio.usuarioPorNome();
-//        repositorio.usuarioPorTipo();
-    }
 }

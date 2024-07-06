@@ -1,14 +1,20 @@
 package org.example.view;
 
+import org.example.controller.UsuarioController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class FrmLogin extends JFrame {
+    private final UsuarioController usuarioController = new UsuarioController();
+
     private JTextField txtLogin;
     private JPasswordField txtSenha;
     private JButton btnOk;
     private JButton btnSair;
+
+    private Boolean autenticado = false;
 
     public FrmLogin() {
         configuraJanela();
@@ -68,7 +74,7 @@ public class FrmLogin extends JFrame {
     }
 
     private void configuraBotoes() {
-        btnOk.addActionListener(e -> recuperaLogin());
+        btnOk.addActionListener(e -> login());
         btnSair.addActionListener(e -> sair());
     }
 
@@ -80,13 +86,34 @@ public class FrmLogin extends JFrame {
         return new String(txtSenha.getPassword());
     }
 
+    public void msgErro() {
+        JOptionPane.showMessageDialog(this, "Usuário não encontrado!");
+    }
+
     private void recuperaLogin() {
         String login = getLogin();
         String senha = getSenha();
-        JOptionPane.showMessageDialog(this, "Login: " + login + "\nSenha: " + senha);
+    }
+
+    public Boolean login() {
+        String login = txtLogin.getText();
+        String senha = new String(txtSenha.getPassword());
+
+        boolean existe = usuarioController.verificaUsuario(login, senha);
+        if (existe) {
+            autenticado = true;
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos!");
+            return false;
+        }
     }
 
     private void sair() {
         System.exit(0);
+    }
+
+    public Boolean autenticado() {
+        return autenticado;
     }
 }

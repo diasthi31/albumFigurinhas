@@ -6,25 +6,23 @@ import org.example.entity.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class FrmUsuarios extends JFrame {
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    private JTextField txtLogin;
-    private JTextField txtSenha;
-    private JComboBox<Perfil> cbPerfil;
-    private JList<Usuario> lstUsuarios;
-    private DefaultListModel<Usuario> listModel;
+    private final JTextField txtLogin;
+    private final JTextField txtSenha;
+    private final JComboBox<Perfil> cbPerfil;
+    private final JList<Usuario> lstUsuarios;
+    private final DefaultListModel<Usuario> listModel;
 
     public FrmUsuarios() {
-        usuarioRepository = new UsuarioRepository(); // Instanciando o controller
+        usuarioRepository = new UsuarioRepository(); //INSTANCIANDO O REPOSITORY
 
         setTitle("Gerenciamento de Usuários");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(900, 500);
         setLocationRelativeTo(null); // Centraliza a janela na tela
 
         JPanel panel = new JPanel();
@@ -95,82 +93,71 @@ public class FrmUsuarios extends JFrame {
         constraints.fill = GridBagConstraints.BOTH;
         panel.add(scrollPane, constraints);
 
-// Carregar a lista de usuários inicialmente
+        //CARREGAR A LISTA DE USUÁRIOS
         carregarUsuarios();
 
-// Evento do botão Inserir
-        btnInserir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String login = txtLogin.getText();
-                String senha = txtSenha.getText();
-                Perfil perfil = (Perfil) cbPerfil.getSelectedItem();
+        //EVENTO DO BOTÃO DE INSERIR
+        btnInserir.addActionListener(e -> {
+            String login = txtLogin.getText();
+            String senha = txtSenha.getText();
+            Perfil perfil = (Perfil) cbPerfil.getSelectedItem();
 
-                Usuario usuario = new Usuario();
-                usuario.setLogin(login);
-                usuario.setSenha(senha);
-                usuario.setPerfil(perfil);
+            Usuario usuario = new Usuario();
+            usuario.setLogin(login);
+            usuario.setSenha(senha);
+            usuario.setPerfil(perfil);
 
-                usuarioRepository.inserirUsuario(usuario);
+            usuarioRepository.inserirUsuario(usuario);
 
-                carregarUsuarios(); // Atualiza a lista após inserção
+            carregarUsuarios(); //ATUALIZA A LISTA APÓS INSERIR
+        });
+
+        //EVENTO DO BOTÃO DE EXCLUIR
+        btnExcluir.addActionListener(e -> {
+            Usuario usuarioSelecionado = lstUsuarios.getSelectedValue();
+            if (usuarioSelecionado != null) {
+                usuarioRepository.excluirUsuario(usuarioSelecionado);
+
+                carregarUsuarios(); //ATUALIZA A LISTA APÓS EXCLUSÃO
+            } else {
+                JOptionPane.showMessageDialog(FrmUsuarios.this, "Selecione um usuário para excluir.");
             }
         });
 
-// Evento do botão Excluir
-        btnExcluir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Usuario usuarioSelecionado = lstUsuarios.getSelectedValue();
-                if (usuarioSelecionado != null) {
-                    usuarioRepository.excluirUsuario(usuarioSelecionado);
+        //EVENTO DO BOTÃO DE EDITAR
+        btnEditar.addActionListener(e -> {
+            Usuario usuarioSelecionado = lstUsuarios.getSelectedValue();
+            if (usuarioSelecionado != null) {
+                String novoLogin = txtLogin.getText();
+                String novaSenha = txtSenha.getText();
+                Perfil novoPerfil = (Perfil) cbPerfil.getSelectedItem();
 
-                    carregarUsuarios(); // Atualiza a lista após exclusão
-                } else {
-                    JOptionPane.showMessageDialog(FrmUsuarios.this, "Selecione um usuário para excluir.");
-                }
+                usuarioSelecionado.setLogin(novoLogin);
+                usuarioSelecionado.setSenha(novaSenha);
+                usuarioSelecionado.setPerfil(novoPerfil);
+
+                usuarioRepository.editarUsuario(usuarioSelecionado);
+
+                carregarUsuarios(); //ATUALIZA A LISTA APÓS EDIÇÃO
+            } else {
+                JOptionPane.showMessageDialog(FrmUsuarios.this, "Selecione um usuário para editar.");
             }
         });
 
-// Evento do botão Editar
-        btnEditar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Usuario usuarioSelecionado = lstUsuarios.getSelectedValue();
-                if (usuarioSelecionado != null) {
-                    String novoLogin = txtLogin.getText();
-                    String novaSenha = txtSenha.getText();
-                    Perfil novoPerfil = (Perfil) cbPerfil.getSelectedItem();
+        //EVENTO DO BOTÃO DE FILTRAR
+        btnFiltrar.addActionListener(e -> {
+            String filtro = txtFiltro.getText();
+            List<Usuario> usuariosFiltrados = usuarioRepository.usuarioPorNome(filtro);
 
-                    usuarioSelecionado.setLogin(novoLogin);
-                    usuarioSelecionado.setSenha(novaSenha);
-                    usuarioSelecionado.setPerfil(novoPerfil);
+            listModel.clear();
 
-                    usuarioRepository.editarUsuario(usuarioSelecionado);
-
-                    carregarUsuarios(); // Atualiza a lista após edição
-                } else {
-                    JOptionPane.showMessageDialog(FrmUsuarios.this, "Selecione um usuário para editar.");
-                }
-            }
-        });
-
-// Evento do botão Filtrar
-        btnFiltrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String filtro = txtFiltro.getText();
-                List<Usuario> usuariosFiltrados = usuarioRepository.usuarioPorNome(filtro);
-
-                listModel.clear();
-                for (Usuario usuario : usuariosFiltrados) {
-                    listModel.addElement(usuario);
-                }
+            for (Usuario usuario : usuariosFiltrados) {
+                listModel.addElement(usuario);
             }
         });
     }
 
-    // Método para carregar a lista de usuários
+    //MÉTODO PARA CARREGAR A LISTA DE USUÁRIOS
     private void carregarUsuarios() {
         listModel.clear();
         List<Usuario> usuarios = usuarioRepository.todosUsuarios();
@@ -181,11 +168,9 @@ public class FrmUsuarios extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                FrmUsuarios frmUsuarios = new FrmUsuarios();
-                frmUsuarios.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            FrmUsuarios frmUsuarios = new FrmUsuarios();
+            frmUsuarios.setVisible(true);
         });
     }
 }
