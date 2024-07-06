@@ -1,9 +1,12 @@
 package org.example;
 
+import org.example.entity.Usuario;
 import org.example.view.*;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
+        Usuario usuario = new Usuario();
+
         FrmSplash splash = new FrmSplash(5000);
         splash.mostraSplash();
 
