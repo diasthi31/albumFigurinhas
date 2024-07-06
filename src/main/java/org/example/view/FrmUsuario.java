@@ -1,5 +1,6 @@
 package org.example.view;
 
+import org.example.controller.UsuarioController;
 import org.example.entity.Perfil;
 import org.example.entity.Usuario;
 import org.example.repository.UsuarioRepository;
@@ -103,21 +104,32 @@ public class FrmUsuario extends JFrame {
     }
 
     private void salvaUsuario() {
+        String login = txtLogin.getText();
+        String senha = txtSenha.getText();
+        Perfil perfil = (Perfil) cbPerfil.getSelectedItem();
+
+        if (login == null || login.isEmpty() || senha == null || senha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Login e senha são obrigatórios!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (usuario == null) {
-            usuario = new Usuario();
-        }
-
-        usuario.setLogin(txtLogin.getText());
-        usuario.setSenha(txtSenha.getText());
-        usuario.setPerfil((Perfil) cbPerfil.getSelectedItem());
-
-        UsuarioRepository usuarioRepository = new UsuarioRepository();
-        if (usuario.getLogin() == null) {
-            usuarioRepository.inserirUsuario(usuario);
+            usuario = new Usuario(login, senha, perfil);
+            UsuarioController usuarioController = new UsuarioController();
+            boolean usuarioInserido = usuarioController.inserirUsuario(usuario);
+            if (!usuarioInserido) {
+                JOptionPane.showMessageDialog(this, "Usuário já existe!", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         } else {
-            usuarioRepository.editarUsuario(usuario);
+            usuario.setLogin(login);
+            usuario.setSenha(senha);
+            usuario.setPerfil(perfil);
+            UsuarioController usuarioController = new UsuarioController();
+            usuarioController.editarUsuario(usuario);
         }
 
+        JOptionPane.showMessageDialog(this, "Usuário salvo com sucesso!");
         dispose();
 
         if (usuario.getPerfil().getValor() != 1) {
@@ -128,6 +140,7 @@ public class FrmUsuario extends JFrame {
             frmUsuarios.setVisible(true);
         }
     }
+
 
     public void cancela() {
         dispose();

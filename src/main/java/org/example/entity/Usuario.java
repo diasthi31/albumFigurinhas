@@ -7,6 +7,12 @@ public class Usuario {
 
     public Usuario() {}
 
+    public Usuario(String login, String senha, Perfil perfil) {
+        this.login = login;
+        this.senha = senha;
+        this.perfil = perfil;
+    }
+
     public String getLogin() {
         return login;
     }
