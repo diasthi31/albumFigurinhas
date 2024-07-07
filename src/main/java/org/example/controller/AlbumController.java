@@ -3,11 +3,13 @@ package org.example.controller;
 import org.example.entity.Album;
 import org.example.entity.Figurinha;
 import org.example.repository.AlbumRepository;
+import org.example.repository.FigurinhaRepository;
 
 import java.util.List;
 
 public class AlbumController {
     private AlbumRepository albumRepository;
+    private FigurinhaRepository figurinhaRepository;
 
     public AlbumController() {
         this.albumRepository = new AlbumRepository();
@@ -30,7 +32,7 @@ public class AlbumController {
     }
 
     public List<Figurinha> filtrarFigurinhaPorTag(String tag) {
-        return albumRepository.buscarFigurinhaPorTag(tag);
+        return figurinhaRepository.buscarPorTag(tag);
     }
 
     public void adicionarFigurinha(Figurinha figurinha) {

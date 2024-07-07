@@ -34,6 +34,41 @@ public class FigurinhaRepository extends Repository {
         }
     }
 
+    public List<Figurinha> buscarPorTag(String tag) {
+        List<Figurinha> figurinhas = new ArrayList<>();
+        String sql = "SELECT * FROM figurinha WHERE tag = ?";
+
+        try {
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, tag);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Figurinha figurinha = new Figurinha();
+
+                figurinha.setId(rs.getInt("id"));
+                figurinha.setCapa(rs.getString("capa"));
+                figurinha.setNome(rs.getString("nome"));
+                figurinha.setDescricao(rs.getString("descricao"));
+                figurinha.setTag(rs.getString("tag"));
+                figurinha.setPagina(rs.getInt("pagina"));
+
+                figurinhas.add(figurinha);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return figurinhas;
+    }
+
     public Boolean buscarFigurinhaPorTag(String tag) {
         try {
             String sql = "SELECT f.nome, f.pagina, f.capa, f.tag, f.descricao FROM figurinha f WHERE tag = ?";

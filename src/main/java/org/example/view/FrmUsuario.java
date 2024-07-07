@@ -1,6 +1,5 @@
 package org.example.view;
 
-import org.example.controller.UsuarioController;
 import org.example.entity.Perfil;
 import org.example.entity.Usuario;
 import org.example.repository.UsuarioRepository;
@@ -104,50 +103,56 @@ public class FrmUsuario extends JFrame {
     }
 
     private void salvaUsuario() {
-        String login = txtLogin.getText();
-        String senha = txtSenha.getText();
-        Perfil perfil = (Perfil) cbPerfil.getSelectedItem();
-
-        if (login == null || login.isEmpty() || senha == null || senha.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Login e senha são obrigatórios!", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         if (usuario == null) {
-            usuario = new Usuario(login, senha, perfil);
-            UsuarioController usuarioController = new UsuarioController();
-            boolean usuarioInserido = usuarioController.inserirUsuario(usuario);
-            if (!usuarioInserido) {
-                JOptionPane.showMessageDialog(this, "Usuário já existe!", "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        } else {
-            usuario.setLogin(login);
-            usuario.setSenha(senha);
-            usuario.setPerfil(perfil);
-            UsuarioController usuarioController = new UsuarioController();
-            usuarioController.editarUsuario(usuario);
+            usuario = new Usuario();
         }
 
-        JOptionPane.showMessageDialog(this, "Usuário salvo com sucesso!");
-        dispose();
-
-        if (usuario.getPerfil().getValor() != 1) {
-            FrmAlbum frmAlbum = new FrmAlbum();
-            frmAlbum.setVisible(true);
+        if (txtLogin.getText().isEmpty() || txtSenha.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
         } else {
-            FrmUsuarios frmUsuarios = new FrmUsuarios();
-            frmUsuarios.setVisible(true);
+            usuario.setLogin(txtLogin.getText());
+            usuario.setSenha(txtSenha.getText());
+            usuario.setPerfil((Perfil) cbPerfil.getSelectedItem());
+
+            UsuarioRepository usuarioRepository = new UsuarioRepository();
+
+            if (!(usuarioRepository.existeUsuario(usuario.getLogin()))) {
+                System.out.println(usuario);
+                usuarioRepository.inserirUsuario(usuario);
+
+                dispose();
+
+                FrmUsuarios frmUsuarios = new FrmUsuarios();
+                frmUsuarios.setVisible(true);
+            } else {
+                usuarioRepository.editarUsuario(usuario);
+
+                if (usuario.getPerfil().getValor() == 3) {
+                    dispose();
+
+                    FrmAlbum frmAlbum = new FrmAlbum();
+                    frmAlbum.setVisible(true);
+                } else {
+                    dispose();
+
+                    FrmUsuarios frmUsuarios = new FrmUsuarios();
+                    frmUsuarios.setVisible(true);
+                }
+            }
         }
     }
-
 
     public void cancela() {
         dispose();
 
-        if (usuario.getPerfil().getValor() != 1) {
-            FrmAlbum frmAlbum = new FrmAlbum();
-            frmAlbum.setVisible(true);
+        if (usuario != null) {
+            if (usuario.getPerfil().getValor() != 1) {
+                FrmAlbum frmAlbum = new FrmAlbum();
+                frmAlbum.setVisible(true);
+            } else {
+                FrmUsuarios frmUsuarios = new FrmUsuarios();
+                frmUsuarios.setVisible(true);
+            }
         } else {
             FrmUsuarios frmUsuarios = new FrmUsuarios();
             frmUsuarios.setVisible(true);

@@ -190,4 +190,33 @@ public class UsuarioRepository extends Repository {
 
         return 0;
     }
+
+    public Boolean existeUsuario(String login) {
+        String sql = "SELECT COUNT(*) FROM usuario WHERE login = ? ";
+
+        try {
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, login);
+
+            ResultSet rs = stmt.executeQuery();
+            int count = rs.getInt(1);
+
+            if (count > 0) {
+                return true;
+            }
+
+            stmt.close();
+            disconnect();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+
+    }
 }
