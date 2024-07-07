@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FrmAutoria extends JFrame {
@@ -133,6 +134,8 @@ public class FrmAutoria extends JFrame {
     }
 
     private void carregarFigurinhas() {
+        tableModel.setRowCount(0);
+
         FigurinhaController figurinhaController = new FigurinhaController();
         List<Figurinha> figurinhas = figurinhaController.buscarTodas();
         if (figurinhas != null) {
@@ -156,6 +159,8 @@ public class FrmAutoria extends JFrame {
 
         FrmFigurinha frmFigurinha = new FrmFigurinha();
         frmFigurinha.setVisible(true);
+
+        carregarFigurinhas();
     }
 
     private void editarFigurinha(JTable table) {
@@ -215,6 +220,8 @@ public class FrmAutoria extends JFrame {
             for (Figurinha figurinha : figurinhasFiltradas) {
                 tableModel.addRow(new Object[]{figurinha.getId(), figurinha.getNome(), figurinha.getPagina()});
             }
+        } else {
+            carregarFigurinhas();
         }
     }
 

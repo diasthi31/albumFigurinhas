@@ -9,7 +9,6 @@ import java.util.List;
 
 public class AlbumController {
     private AlbumRepository albumRepository;
-    private FigurinhaRepository figurinhaRepository;
 
     public AlbumController() {
         this.albumRepository = new AlbumRepository();
@@ -32,17 +31,10 @@ public class AlbumController {
     }
 
     public List<Figurinha> filtrarFigurinhaPorTag(String tag) {
-        return figurinhaRepository.buscarPorTag(tag);
-    }
+        FigurinhaRepository figurinhaRepository  = new FigurinhaRepository();
+        List<Figurinha> figurinhas = figurinhaRepository.buscarPorTag(tag);
 
-    public void adicionarFigurinha(Figurinha figurinha) {
-    }
-
-    public void removerFigurinha(int id) {
-
-    }
-
-    public void atualizarFigurinha(Figurinha figurinha) {
+        return figurinhas;
     }
 
     public Figurinha buscarFigurinhaPorId(int i) {
