@@ -26,7 +26,7 @@ public class Repository {
         conn = DriverManager.getConnection(_CONNECTION_STRING_);
         try (Statement stmt = conn.createStatement()) {
             stmt.execute("PRAGMA journal_mode=WAL");
-            stmt.execute("PRAGMA busy_timeout=5000"); // Espera de 5 segundos
+            stmt.execute("PRAGMA busy_timeout=5000");
         }
         System.out.println("Connected to " + _CONNECTION_STRING_);
         return conn;
