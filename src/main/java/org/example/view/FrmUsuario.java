@@ -117,8 +117,11 @@ public class FrmUsuario extends JFrame {
             UsuarioRepository usuarioRepository = new UsuarioRepository();
 
             if (!(usuarioRepository.existeUsuario(usuario.getLogin()))) {
-                System.out.println(usuario);
-                usuarioRepository.inserirUsuario(usuario);
+                try {
+                    usuarioRepository.inserirUsuario(usuario);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 dispose();
 
@@ -162,11 +165,6 @@ public class FrmUsuario extends JFrame {
             FrmUsuarios frmUsuarios = new FrmUsuarios();
             frmUsuarios.setVisible(true);
         }
-    }
-
-    public static void main(String[] args) {
-        FrmUsuario frmUsuario = new FrmUsuario();
-        frmUsuario.setVisible(true);
     }
 
     public void bloqueiaCampo() {

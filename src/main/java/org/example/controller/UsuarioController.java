@@ -16,9 +16,12 @@ public class UsuarioController {
         Boolean existe = usuarioRepository.verificaUsuario(usuario.getLogin(), usuario.getSenha());
 
         if (!existe) {
-            usuarioRepository.inserirUsuario(usuario);
-
-            return true;
+            try {
+                usuarioRepository.inserirUsuario(usuario);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return false;

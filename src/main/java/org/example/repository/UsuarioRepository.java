@@ -10,32 +10,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioRepository extends Repository {
-    public void inserirUsuario(Usuario usuario) {
-        try {
-            String sql = "INSERT INTO usuario (login, senha, perfil) VALUES (?,?,?)";
 
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+    public boolean inserirUsuario(Usuario usuario) {
+        String sql = "INSERT INTO usuario (login, senha, perfil) VALUES (?,?,?)";
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, usuario.getLogin());
-            stmt.setString(2, usuario.getSenha());
-            stmt.setInt(3, usuario.getPerfil().getValor());
+             stmt.setString(1, usuario.getLogin());
+             stmt.setString(2, usuario.getSenha());
+             stmt.setInt(3, usuario.getPerfil().getValor());
 
-            stmt.executeUpdate();
-
-            stmt.close();
-            disconnect();
+             stmt.executeUpdate();
+             return true;
         } catch (Exception e) {
-            e.getStackTrace();
+             e.printStackTrace();
         }
+        return false;
     }
 
     public void editarUsuario(Usuario usuario) {
-        try {
-            String sql = "UPDATE usuario SET login = ?, senha = ?, perfil = ? WHERE login = ?";
-
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        String sql = "UPDATE usuario SET login = ?, senha = ?, perfil = ? WHERE login = ?";
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, usuario.getLogin());
             stmt.setString(2, usuario.getSenha());
@@ -43,64 +39,46 @@ public class UsuarioRepository extends Repository {
             stmt.setString(4, usuario.getLogin());
 
             stmt.executeUpdate();
-
-            stmt.close();
-            disconnect();
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
     }
 
     public void excluirUsuario(String usuario) {
-        try {
-            String sql = "DELETE FROM usuario WHERE login = ?";
-
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        String sql = "DELETE FROM usuario WHERE login = ?";
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, usuario);
-
             stmt.executeUpdate();
-
-            stmt.close();
-            disconnect();
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
     }
 
     public List<Usuario> todosUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT u.login, u.senha, u.perfil FROM usuario u ORDER BY u.perfil, u.login";
 
-        try {
-            String sql = "SELECT u.login, u.senha, u.perfil FROM usuario u ORDER BY u.perfil, u.login";
-
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Usuario u = new Usuario();
-
                 u.setLogin(rs.getString("login"));
                 u.setSenha(rs.getString("senha"));
 
-                if (rs.getInt("perfil") == 1) {
-                    u.setPerfil(Perfil.ADMINISTRADOR);
-                } else if (rs.getInt("perfil") == 2) {
-                    u.setPerfil(Perfil.AUTOR);
-                } else if (rs.getInt("perfil") == 3) {
-                    u.setPerfil(Perfil.COLECIONADOR);
+                switch (rs.getInt("perfil")) {
+                    case 1 -> u.setPerfil(Perfil.ADMINISTRADOR);
+                    case 2 -> u.setPerfil(Perfil.AUTOR);
+                    case 3 -> u.setPerfil(Perfil.COLECIONADOR);
                 }
 
                 usuarios.add(u);
             }
-
-            rs.close();
-            stmt.close();
-            disconnect();
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
         return usuarios;
@@ -108,115 +86,92 @@ public class UsuarioRepository extends Repository {
 
     public List<Usuario> usuarioPorNome(String nome) {
         List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT u.login, u.perfil FROM usuario u WHERE u.login LIKE ? ORDER BY u.perfil, u.login";
 
-        try {
-            String sql = "SELECT u.login, u.perfil FROM usuario u WHERE u.login LIKE '%" + nome + "%' ORDER BY u.perfil, u.login";
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
+            stmt.setString(1, "%" + nome + "%");
 
-            while (rs.next()) {
-                Usuario u = new Usuario();
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Usuario u = new Usuario();
+                    u.setLogin(rs.getString("login"));
 
-                u.setLogin(rs.getString("login"));
+                    switch (rs.getInt("perfil")) {
+                        case 1 -> u.setPerfil(Perfil.ADMINISTRADOR);
+                        case 2 -> u.setPerfil(Perfil.AUTOR);
+                        case 3 -> u.setPerfil(Perfil.COLECIONADOR);
+                    }
 
-                if (rs.getInt("perfil") == 1) {
-                    u.setPerfil(Perfil.ADMINISTRADOR);
-                } else if (rs.getInt("perfil") == 2) {
-                    u.setPerfil(Perfil.AUTOR);
-                } else if (rs.getInt("perfil") == 3) {
-                    u.setPerfil(Perfil.COLECIONADOR);
+                    usuarios.add(u);
                 }
-
-                usuarios.add(u);
             }
-
-            rs.close();
-            stmt.close();
-            disconnect();
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
         return usuarios;
     }
 
     public Boolean verificaUsuario(String login, String senha) {
-        try {
-            String sql = "SELECT u.login, u.senha FROM usuario u WHERE u.login = ? AND u.senha = ?";
+        String sql = "SELECT u.login, u.senha FROM usuario u WHERE u.login = ? AND u.senha = ?";
 
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, login);
             stmt.setString(2, senha);
 
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return true;
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
             }
-
-            stmt.close();
-            disconnect();
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
         return false;
     }
 
     public Integer verificaTipoUsuario(String login) {
-        try {
-            String sql = "SELECT u.perfil FROM usuario u WHERE u.login = ? ";
+        String sql = "SELECT u.perfil FROM usuario u WHERE u.login = ?";
 
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, login);
 
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("perfil");
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("perfil");
+                }
             }
-
-            stmt.close();
-            disconnect();
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
         return 0;
     }
 
     public Boolean existeUsuario(String login) {
-        String sql = "SELECT COUNT(*) FROM usuario WHERE login = ? ";
+        String sql = "SELECT COUNT(*) FROM usuario WHERE login = ?";
 
-        try {
-            Connection conn = connect();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, login);
 
-            ResultSet rs = stmt.executeQuery();
-            int count = rs.getInt(1);
-
-            if (count > 0) {
-                return true;
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.getInt(1) > 0) {
+                    return true;
+                }
             }
-
-            stmt.close();
-            disconnect();
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
         return false;
-    }
-
-    public static void main(String[] args) {
-
     }
 }
