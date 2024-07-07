@@ -96,7 +96,7 @@ public class FrmUsuarios extends JFrame {
     private void addEventListeners(JButton btnInserir, JButton btnExcluir, JButton btnEditar, JTextField txtFiltro, JButton btnFiltrar) {
         btnInserir.addActionListener(e -> {
             dispose();
-            FrmUsuario frmUsuario = new FrmUsuario();
+            FrmUsuario frmUsuario = new FrmUsuario(new Usuario());
             frmUsuario.setVisible(true);
         });
 

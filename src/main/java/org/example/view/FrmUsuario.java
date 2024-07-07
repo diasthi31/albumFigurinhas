@@ -146,9 +146,14 @@ public class FrmUsuario extends JFrame {
         dispose();
 
         if (usuario != null) {
-            if (usuario.getPerfil().getValor() != 1) {
-                FrmAlbum frmAlbum = new FrmAlbum();
-                frmAlbum.setVisible(true);
+            if (usuario.getPerfil() != null) {
+                if (usuario.getPerfil().getValor() != 1) {
+                    FrmAlbum frmAlbum = new FrmAlbum();
+                    frmAlbum.setVisible(true);
+                } else {
+                    FrmUsuarios frmUsuarios = new FrmUsuarios();
+                    frmUsuarios.setVisible(true);
+                }
             } else {
                 FrmUsuarios frmUsuarios = new FrmUsuarios();
                 frmUsuarios.setVisible(true);
